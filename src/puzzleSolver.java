@@ -1,6 +1,3 @@
-/**
- * Created by hyma on 15/3/19.
- */
 public class puzzleSolver {
 
     // converting einstein puzzle to cnf
@@ -39,6 +36,13 @@ public class puzzleSolver {
         int blends = 22;
         int bluemasters = 23;
         int prince = 24;
+
+        // house position
+        int firstHouse = 25;
+        int secondHouse = 26;
+        int thirdHouse = 27;
+        int fourthHouse = 28;
+        int fifthHouse = 29;
 
         // encoding the rules
 
@@ -137,14 +141,25 @@ public class puzzleSolver {
             }
         }
 
-        // first 3 hints
+        // first 7 hints
         for(int i=0; i<5; i++) {
             System.out.println(-(nationality(brit, i+1)) + "," + -(houseColour(red, i+1)));
             System.out.println(-(nationality(swede, i+1)) + "," + -(pet(dog, i+1)));
             System.out.println(-(nationality(dane, i+1)) + "," + -(beverage(tea, i+1)));
+            for(int j=5; j>0; j--) {
+                if(!(j<=i+1 && j>=i)) {
+                    System.out.println(-(houseColour(white, i+1)) + "," + -(houseColour(red, j)));
+                }
+            }
+            System.out.println(-(houseColour(green, i+1)) + "," + -(beverage(coffee, i+1)));
+            System.out.println(-(cigar(pallMall, i+1)) + "," + -(pet(bird, i+1)));
+            System.out.println(-(houseColour(yellow, i+1)) + "," + -(cigar(dunhill, i+1)));
         }
 
-        // green house is on the left of the white house
+        // hints 8 and 9
+        System.out.println(-(beverage(milk, thirdHouse)));
+        System.out.println(-(nationality(norwegian, firstHouse)));
+
 
 
     }

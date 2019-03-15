@@ -39,11 +39,11 @@ public class puzzleSolver {
         int prince = 24;
 
         // house position
-        int firstHouse = 25;
-        int secondHouse = 26;
-        int thirdHouse = 27;
-        int fourthHouse = 28;
-        int fifthHouse = 29;
+        int firstHouse = 105;
+        int secondHouse = 106;
+        int thirdHouse = 107;
+        int fourthHouse = 108;
+        int fifthHouse = 109;
 
         // encoding the rules
 

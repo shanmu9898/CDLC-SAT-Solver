@@ -45,13 +45,17 @@ public class puzzleSolver {
         // there are 5 houses in 5 different colours
         for (int i=0; i<5; i++) {
             for (int j=0; j<5; j++) {
-                System.out.println(houseColour(i,j+1) + "0");
+                System.out.print(houseColour(i,j+1));
+            }
+            System.out.println("0");
+            for (int j=0; j<5; j++) {
+                //System.out.println(houseColour(i,j+1) + "0");
                 for (int k=0; k<j; k++) {
-                    System.out.println("-" + houseColour(i, j+1) +  "," + houseColour(i, k+1) + "0");
+                    System.out.println(-(houseColour(i, j+1)) +  "," + -(houseColour(i, k+1)) + "0");
                 }
                 for (int k=0; k<5; k++) {
                     if(!(i==k)) {
-                        System.out.println("-" + houseColour(i, j+1) +  "," + houseColour(k, j+1) + "0");
+                        System.out.println(-(houseColour(i, j+1)) +  "," + -(houseColour(k, j+1)) + "0");
                     }
                 }
             }

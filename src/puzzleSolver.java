@@ -1,6 +1,7 @@
 public class puzzleSolver {
 
     // converting einstein puzzle to cnf
+    // direct console output to einsteinPuzzle.out
 
     public void main (String args[]) {
         // nationalities
@@ -146,11 +147,13 @@ public class puzzleSolver {
             System.out.println(-(nationality(brit, i+1)) + "," + -(houseColour(red, i+1)));
             System.out.println(-(nationality(swede, i+1)) + "," + -(pet(dog, i+1)));
             System.out.println(-(nationality(dane, i+1)) + "," + -(beverage(tea, i+1)));
-            for(int j=5; j>0; j--) {
-                if(!(j<=i+1 && j>=i)) {
-                    System.out.println(-(houseColour(white, i+1)) + "," + -(houseColour(red, j)));
-                }
-            }
+
+            // hint 4
+            System.out.println(-(houseColour(white, firstHouse)) + "," + -(houseColour(green, secondHouse)));
+            System.out.println(-(houseColour(white, secondHouse)) + "," + -(houseColour(green, thirdHouse)));
+            System.out.println(-(houseColour(white, thirdHouse)) + "," + -(houseColour(green, fourthHouse)));
+            System.out.println(-(houseColour(white, fourthHouse)) + "," + -(houseColour(green, fifthHouse)));
+
             System.out.println(-(houseColour(green, i+1)) + "," + -(beverage(coffee, i+1)));
             System.out.println(-(cigar(pallMall, i+1)) + "," + -(pet(bird, i+1)));
             System.out.println(-(houseColour(yellow, i+1)) + "," + -(cigar(dunhill, i+1)));
@@ -160,8 +163,47 @@ public class puzzleSolver {
         System.out.println(-(beverage(milk, thirdHouse)));
         System.out.println(-(nationality(norwegian, firstHouse)));
 
+        // hint 10
+        System.out.println(-(cigar(blends, firstHouse)) + "," + -(pet(cat, secondHouse)));
+        System.out.println(-(cigar(blends, secondHouse)) + "," + -(pet(cat, thirdHouse)));
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(pet(cat, fourthHouse)));
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(pet(cat, fifthHouse)));
 
+        // hint 11
+        System.out.println(-(pet(horse, firstHouse)) + "," + -(cigar(dunhill, secondHouse)));
+        System.out.println(-(pet(horse, secondHouse)) + "," + -(cigar(dunhill, thirdHouse)));
+        System.out.println(-(pet(horse, thirdHouse)) + "," + -(cigar(dunhill, fourthHouse)));
+        System.out.println(-(pet(horse, fourthHouse)) + "," + -(cigar(dunhill, fifthHouse)));
+        System.out.println(-(pet(horse, secondHouse)) + "," + -(cigar(dunhill, firstHouse)));
+        System.out.println(-(pet(horse, thirdHouse)) + "," + -(cigar(dunhill, secondHouse)));
+        System.out.println(-(pet(horse, fourthHouse)) + "," + -(cigar(dunhill, thirdHouse)));
+        System.out.println(-(pet(horse, fifthHouse)) + "," + -(cigar(dunhill, fourthHouse)));
 
+        // hints 12 and 13
+        for(int i=0; i<5; i++) {
+            System.out.println(-(cigar(bluemasters, i + 1)) + "," + -(beverage(beer, i + 1)));
+            System.out.println(-(nationality(german, i + 1)) + "," + -(cigar(prince, i + 1)));
+        }
+
+        // hint 14
+        System.out.println(-(nationality(norwegian, firstHouse)) + "," + -(houseColour(blue, secondHouse)));
+        System.out.println(-(nationality(norwegian, secondHouse)) + "," + -(houseColour(blue, thirdHouse)));
+        System.out.println(-(nationality(norwegian, thirdHouse)) + "," + -(houseColour(blue, fourthHouse)));
+        System.out.println(-(nationality(norwegian, fourthHouse)) + "," + -(houseColour(blue, fifthHouse)));
+        System.out.println(-(nationality(norwegian, secondHouse)) + "," + -(houseColour(blue, firstHouse)));
+        System.out.println(-(nationality(norwegian, thirdHouse)) + "," + -(houseColour(blue, secondHouse)));
+        System.out.println(-(nationality(norwegian, fourthHouse)) + "," + -(houseColour(blue, thirdHouse)));
+        System.out.println(-(nationality(norwegian, fifthHouse)) + "," + -(houseColour(blue, fourthHouse)));
+
+        // hint 15
+        System.out.println(-(cigar(blends, firstHouse)) + "," + -(beverage(water, secondHouse)));
+        System.out.println(-(cigar(blends, secondHouse)) + "," + -(beverage(water, thirdHouse)));
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(beverage(water, fourthHouse)));
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(beverage(water, fifthHouse)));
+        System.out.println(-(cigar(blends, secondHouse)) + "," + -(beverage(water, firstHouse)));
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(beverage(water, secondHouse)));
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(beverage(water, thirdHouse)));
+        System.out.println(-(cigar(blends, fifthHouse)) + "," + -(beverage(water, fourthHouse)));
     }
 
     public int houseColour(int a, int b) {
@@ -183,6 +225,5 @@ public class puzzleSolver {
     public int pet(int a, int b) {
         return 5*a + b;
     }
-
 
 }

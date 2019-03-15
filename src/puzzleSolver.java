@@ -144,9 +144,14 @@ public class puzzleSolver {
 
         // first 7 hints
         for(int i=0; i<5; i++) {
-            System.out.println(-(nationality(brit, i+1)) + "," + -(houseColour(red, i+1)) + " 0");
-            System.out.println(-(nationality(swede, i+1)) + "," + -(pet(dog, i+1)) + " 0");
-            System.out.println(-(nationality(dane, i+1)) + "," + -(beverage(tea, i+1)) + " 0");
+            System.out.println(-(nationality(brit, i+1)) + "," + (houseColour(red, i+1)) + " 0");
+            System.out.println((nationality(brit, i+1)) + "," + -(houseColour(red, i+1)) + " 0");
+
+            System.out.println(-(nationality(swede, i+1)) + "," + (pet(dog, i+1)) + " 0");
+            System.out.println((nationality(swede, i+1)) + "," + -(pet(dog, i+1)) + " 0");
+
+            System.out.println(-(nationality(dane, i+1)) + "," + (beverage(tea, i+1)) + " 0");
+            System.out.println((nationality(dane, i+1)) + "," + -(beverage(tea, i+1)) + " 0");
 
             // hint 4
             System.out.println(-(houseColour(white, firstHouse)) + "," + -(houseColour(green, secondHouse)) + " 0");
@@ -154,56 +159,64 @@ public class puzzleSolver {
             System.out.println(-(houseColour(white, thirdHouse)) + "," + -(houseColour(green, fourthHouse)) + " 0");
             System.out.println(-(houseColour(white, fourthHouse)) + "," + -(houseColour(green, fifthHouse)) + " 0");
 
-            System.out.println(-(houseColour(green, i+1)) + "," + -(beverage(coffee, i+1)) + " 0");
-            System.out.println(-(cigar(pallMall, i+1)) + "," + -(pet(bird, i+1)));
-            System.out.println(-(houseColour(yellow, i+1)) + "," + -(cigar(dunhill, i+1)) + " 0");
+            System.out.println(-(houseColour(green, i+1)) + "," + (beverage(coffee, i+1)) + " 0");
+            System.out.println((houseColour(green, i+1)) + "," + -(beverage(coffee, i+1)) + " 0");
+
+            System.out.println(-(cigar(pallMall, i+1)) + "," + (pet(bird, i+1)));
+            System.out.println((cigar(pallMall, i+1)) + "," + -(pet(bird, i+1)));
+
+            System.out.println(-(houseColour(yellow, i+1)) + "," + (cigar(dunhill, i+1)) + " 0");
+            System.out.println((houseColour(yellow, i+1)) + "," + -(cigar(dunhill, i+1)) + " 0");
         }
 
         // hints 8 and 9
-        System.out.println(-(beverage(milk, thirdHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, firstHouse)) + " 0");
+        System.out.println((beverage(milk, thirdHouse)) + " 0");
+        System.out.println((nationality(norwegian, firstHouse)) + " 0");
 
         // hint 10
-        System.out.println(-(cigar(blends, firstHouse)) + "," + -(pet(cat, secondHouse)) + " 0");
-        System.out.println(-(cigar(blends, secondHouse)) + "," + -(pet(cat, thirdHouse)) + " 0");
-        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(pet(cat, fourthHouse)) + " 0");
-        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(pet(cat, fifthHouse)) + " 0");
+        System.out.println(-(cigar(blends, firstHouse)) + "," + (pet(cat, secondHouse)) + " 0");
+        System.out.println(-(cigar(blends, secondHouse)) + "," + (pet(cat, thirdHouse)) + " 0");
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + (pet(cat, fourthHouse)) + " 0");
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + (pet(cat, fifthHouse)) + " 0");
 
         // hint 11
-        System.out.println(-(pet(horse, firstHouse)) + "," + -(cigar(dunhill, secondHouse)) + " 0");
-        System.out.println(-(pet(horse, secondHouse)) + "," + -(cigar(dunhill, thirdHouse)) + " 0");
-        System.out.println(-(pet(horse, thirdHouse)) + "," + -(cigar(dunhill, fourthHouse)) + " 0");
-        System.out.println(-(pet(horse, fourthHouse)) + "," + -(cigar(dunhill, fifthHouse)) + " 0");
-        System.out.println(-(pet(horse, secondHouse)) + "," + -(cigar(dunhill, firstHouse)) + " 0");
-        System.out.println(-(pet(horse, thirdHouse)) + "," + -(cigar(dunhill, secondHouse)) + " 0");
-        System.out.println(-(pet(horse, fourthHouse)) + "," + -(cigar(dunhill, thirdHouse)) + " 0");
-        System.out.println(-(pet(horse, fifthHouse)) + "," + -(cigar(dunhill, fourthHouse)) + " 0");
+        System.out.println(-(pet(horse, firstHouse)) + "," + (cigar(dunhill, secondHouse)) + " 0");
+        System.out.println(-(pet(horse, secondHouse)) + "," + (cigar(dunhill, thirdHouse)) + " 0");
+        System.out.println(-(pet(horse, thirdHouse)) + "," + (cigar(dunhill, fourthHouse)) + " 0");
+        System.out.println(-(pet(horse, fourthHouse)) + "," + (cigar(dunhill, fifthHouse)) + " 0");
+        System.out.println(-(pet(horse, secondHouse)) + "," + (cigar(dunhill, firstHouse)) + " 0");
+        System.out.println(-(pet(horse, thirdHouse)) + "," + (cigar(dunhill, secondHouse)) + " 0");
+        System.out.println(-(pet(horse, fourthHouse)) + "," + (cigar(dunhill, thirdHouse)) + " 0");
+        System.out.println(-(pet(horse, fifthHouse)) + "," + (cigar(dunhill, fourthHouse)) + " 0");
 
         // hints 12 and 13
         for(int i=0; i<5; i++) {
-            System.out.println(-(cigar(bluemasters, i + 1)) + "," + -(beverage(beer, i + 1)) + " 0");
-            System.out.println(-(nationality(german, i + 1)) + "," + -(cigar(prince, i + 1)) + " 0");
+            System.out.println(-(cigar(bluemasters, i + 1)) + "," + (beverage(beer, i + 1)) + " 0");
+            System.out.println((cigar(bluemasters, i + 1)) + "," + -(beverage(beer, i + 1)) + " 0");
+
+            System.out.println(-(nationality(german, i + 1)) + "," + (cigar(prince, i + 1)) + " 0");
+            System.out.println((nationality(german, i + 1)) + "," + -(cigar(prince, i + 1)) + " 0");
         }
 
         // hint 14
-        System.out.println(-(nationality(norwegian, firstHouse)) + "," + -(houseColour(blue, secondHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, secondHouse)) + "," + -(houseColour(blue, thirdHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, thirdHouse)) + "," + -(houseColour(blue, fourthHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, fourthHouse)) + "," + -(houseColour(blue, fifthHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, secondHouse)) + "," + -(houseColour(blue, firstHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, thirdHouse)) + "," + -(houseColour(blue, secondHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, fourthHouse)) + "," + -(houseColour(blue, thirdHouse)) + " 0");
-        System.out.println(-(nationality(norwegian, fifthHouse)) + "," + -(houseColour(blue, fourthHouse)) + " 0");
+        System.out.println((nationality(norwegian, firstHouse)) + "," + (houseColour(blue, secondHouse)) + " 0");
+        System.out.println((nationality(norwegian, secondHouse)) + "," + (houseColour(blue, thirdHouse)) + " 0");
+        System.out.println((nationality(norwegian, thirdHouse)) + "," + (houseColour(blue, fourthHouse)) + " 0");
+        System.out.println((nationality(norwegian, fourthHouse)) + "," + (houseColour(blue, fifthHouse)) + " 0");
+        System.out.println((nationality(norwegian, secondHouse)) + "," + (houseColour(blue, firstHouse)) + " 0");
+        System.out.println((nationality(norwegian, thirdHouse)) + "," + (houseColour(blue, secondHouse)) + " 0");
+        System.out.println((nationality(norwegian, fourthHouse)) + "," + (houseColour(blue, thirdHouse)) + " 0");
+        System.out.println((nationality(norwegian, fifthHouse)) + "," + (houseColour(blue, fourthHouse)) + " 0");
 
         // hint 15
-        System.out.println(-(cigar(blends, firstHouse)) + "," + -(beverage(water, secondHouse)) + " 0");
-        System.out.println(-(cigar(blends, secondHouse)) + "," + -(beverage(water, thirdHouse)) + " 0");
-        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(beverage(water, fourthHouse)) + " 0");
-        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(beverage(water, fifthHouse)) + " 0");
-        System.out.println(-(cigar(blends, secondHouse)) + "," + -(beverage(water, firstHouse)) + " 0");
-        System.out.println(-(cigar(blends, thirdHouse)) + "," + -(beverage(water, secondHouse)) + " 0");
-        System.out.println(-(cigar(blends, fourthHouse)) + "," + -(beverage(water, thirdHouse)) + " 0");
-        System.out.println(-(cigar(blends, fifthHouse)) + "," + -(beverage(water, fourthHouse)) + " 0");
+        System.out.println(-(cigar(blends, firstHouse)) + "," + (beverage(water, secondHouse)) + " 0");
+        System.out.println(-(cigar(blends, secondHouse)) + "," + (beverage(water, thirdHouse)) + " 0");
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + (beverage(water, fourthHouse)) + " 0");
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + (beverage(water, fifthHouse)) + " 0");
+        System.out.println(-(cigar(blends, secondHouse)) + "," + (beverage(water, firstHouse)) + " 0");
+        System.out.println(-(cigar(blends, thirdHouse)) + "," + (beverage(water, secondHouse)) + " 0");
+        System.out.println(-(cigar(blends, fourthHouse)) + "," + (beverage(water, thirdHouse)) + " 0");
+        System.out.println(-(cigar(blends, fifthHouse)) + "," + (beverage(water, fourthHouse)) + " 0");
     }
 
     public int houseColour(int a, int b) {

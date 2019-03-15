@@ -40,6 +40,28 @@ public class puzzleSolver {
         int bluemasters = 23;
         int prince = 24;
 
+        // encoding the rules
+
+        // there are 5 houses in 5 different colours
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<5; j++) {
+                System.out.println(houseColour(i,j+1) + "0");
+                for (int k=0; k<j; k++) {
+                    System.out.println("-" + houseColour(i, j+1) +  "," + houseColour(i, k+1) + "0");
+                }
+                for (int k=0; k<5; k++) {
+                    if(!(i==k)) {
+                        System.out.println("-" + houseColour(i, j+1) +  "," + houseColour(k, j+1) + "0");
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public int houseColour(int a, int b) {
+        return 5*a + b;
     }
 
 }

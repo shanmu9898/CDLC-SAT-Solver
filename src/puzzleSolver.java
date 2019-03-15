@@ -61,11 +61,113 @@ public class puzzleSolver {
             }
         }
 
+        // in each house, lives a man with a different nationality
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<5; j++) {
+                System.out.print(nationality(i,j+1));
+            }
+            System.out.println("0");
+            for (int j=0; j<5; j++) {
+                //System.out.println(nationality(i,j+1) + "0");
+                for (int k=0; k<j; k++) {
+                    System.out.println(-(nationality(i, j+1)+25) +  "," + -(nationality(i, k+1)+25) + "0");
+                }
+                for (int k=0; k<5; k++) {
+                    if(!(i==k)) {
+                        System.out.println(-(nationality(i, j+1)+25) +  "," + -(nationality(k, j+1)+25) + "0");
+                    }
+                }
+            }
+        }
+
+        // each owner drinks a certain type of beverage
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<5; j++) {
+                System.out.print(beverage(i,j+1));
+            }
+            System.out.println("0");
+            for (int j=0; j<5; j++) {
+                //System.out.println(beverage(i,j+1) + "0");
+                for (int k=0; k<j; k++) {
+                    System.out.println(-(beverage(i, j+1)+50) +  "," + -(beverage(i, k+1)+50) + "0");
+                }
+                for (int k=0; k<5; k++) {
+                    if(!(i==k)) {
+                        System.out.println(-(beverage(i, j+1)+50) +  "," + -(beverage(k, j+1)+50) + "0");
+                    }
+                }
+            }
+        }
+
+        // each owner drinks a certain brand of cigar
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<5; j++) {
+                System.out.print(cigar(i,j+1));
+            }
+            System.out.println("0");
+            for (int j=0; j<5; j++) {
+                //System.out.println(cigar(i,j+1) + "0");
+                for (int k=0; k<j; k++) {
+                    System.out.println(-(cigar(i, j+1)+75) +  "," + -(cigar(i, k+1)+75) + "0");
+                }
+                for (int k=0; k<5; k++) {
+                    if(!(i==k)) {
+                        System.out.println(-(cigar(i, j+1)+75) +  "," + -(cigar(k, j+1)+75) + "0");
+                    }
+                }
+            }
+        }
+
+        // each owner keeps a certain pet
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<5; j++) {
+                System.out.print(pet(i,j+1));
+            }
+            System.out.println("0");
+            for (int j=0; j<5; j++) {
+                //System.out.println(pet(i,j+1) + "0");
+                for (int k=0; k<j; k++) {
+                    System.out.println(-(pet(i, j+1)+100) +  "," + -(pet(i, k+1)+100) + "0");
+                }
+                for (int k=0; k<5; k++) {
+                    if(!(i==k)) {
+                        System.out.println(-(pet(i, j+1)+100) +  "," + -(pet(k, j+1)+100) + "0");
+                    }
+                }
+            }
+        }
+
+        // first 3 hints
+        for(int i=0; i<5; i++) {
+            System.out.println(-(nationality(brit, i+1)) + "," + -(houseColour(red, i+1)));
+            System.out.println(-(nationality(swede, i+1)) + "," + -(pet(dog, i+1)));
+            System.out.println(-(nationality(dane, i+1)) + "," + -(beverage(tea, i+1)));
+        }
+
+        // green house is on the left of the white house
+
 
     }
 
     public int houseColour(int a, int b) {
         return 5*a + b;
     }
+
+    public int nationality(int a, int b) {
+        return 5*a + b;
+    }
+
+    public int beverage(int a, int b) {
+        return 5*a + b;
+    }
+
+    public int cigar(int a, int b) {
+        return 5*a + b;
+    }
+
+    public int pet(int a, int b) {
+        return 5*a + b;
+    }
+
 
 }

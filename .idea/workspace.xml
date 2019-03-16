@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="e6465e42-591a-48fa-af87-01ba83389f2b" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/src/CDCLSolver.java" afterPath="$PROJECT_DIR$/src/CDCLSolver.java" />
-      <change beforePath="$PROJECT_DIR$/src/Variable.java" afterPath="$PROJECT_DIR$/src/Variable.java" />
-    </list>
+    <list default="true" id="e6465e42-591a-48fa-af87-01ba83389f2b" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -397,12 +394,12 @@
       <workItem from="1549014676749" duration="2527000" />
       <workItem from="1549021740773" duration="1098000" />
       <workItem from="1549025004940" duration="8255000" />
-      <workItem from="1552712985414" duration="23929000" />
+      <workItem from="1552712985414" duration="23984000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="37751000" />
+    <option name="totallyTimeSpent" value="37806000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="730" extended-state="0" />

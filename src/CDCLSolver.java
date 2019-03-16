@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import javafx.util.Pair;
 
@@ -11,7 +12,7 @@ public class CDCLSolver {
     //      if there is a conflict do conflict analysis
 
     HashMap<Integer, Integer> decisionLevelAssigned;
-    HashMap<Integer, Integer> valuesAlreadyAssigned;
+    ArrayList<Variable> valuesAlreadyAssigned;
     boolean[] solution;
     int numberOfVariablesAssigned;
     int totalNumberOfClauses;
@@ -27,7 +28,7 @@ public class CDCLSolver {
         this.solution = new boolean[totalNumberOfVariables];
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
-        this.valuesAlreadyAssigned = new HashMap<Integer, Integer>();
+        this.valuesAlreadyAssigned = new ArrayList<Variable>();
     }
 
     public String solution() {
@@ -36,7 +37,7 @@ public class CDCLSolver {
             int value = unitpropogation();
 
             if(value == 0) {
-                guessABranchingVariable();
+                guessABranchingVariable(formula);
                 currentDecisionLevel++;
                 //TODO: increment the number of variables assigned
                 //TODO: add it to the decisionLevelAssigned DS (with variable name, decisionLevel)
@@ -178,4 +179,29 @@ public class CDCLSolver {
         }
     }
 
+    private void guessABranchingVariable(ArrayList<Clause> formula ) {
+        Random randomClauseGenerator = new Random();
+        int index = randomClauseGenerator.nextInt(formula.size());
+        Clause c = formula.get(index);
+        pickRandomVariable(c);
+    }
+
+    private void pickRandomVariable(Clause c) {
+        c.getOrVariables();
+        Random randomVariableGenerator = new Random();
+        int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
+        Variable var = c.getOrVariables().get(index);
+        Random ranValue = new Random();
+        int value = ranValue.nextInt(2);
+        boolean val = false;
+        if (value == 0) {
+            val = false;
+        } else {
+            val = true;
+        }
+        var.setVariableValue(val);
+        numberOfVariablesAssigned++;
+        decisionLevelAssigned.put(var.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(var);
+    }
 }

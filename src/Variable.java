@@ -1,18 +1,20 @@
 public class Variable {
-    int variableIdentifier;
+    int variableName;
     boolean variableValue;
 
-    public Variable(int variableIdentifier, boolean variableValue){
-        this.variableIdentifier = variableIdentifier;
+
+    public Variable(int variableName, boolean variableValue){
+        this.variableName = variableName;
         this.variableValue = variableValue;
+
     }
 
-    public int getVariableIdentifier() {
-        return variableIdentifier;
+    public int getVariableName() {
+        return variableName;
     }
 
-    public void setVariableIdentifier(int variableIdentifier) {
-        this.variableIdentifier = variableIdentifier;
+    public void setVariableName(int variableName) {
+        this.variableName = variableName;
     }
 
     public boolean getVariableValue() {
@@ -28,13 +30,13 @@ public class Variable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Variable variable = (Variable) o;
-        return variableIdentifier == variable.variableIdentifier;
+        return variableName == variable.variableName;
     }
 
     @Override
     public String toString() {
         return "Variable{" +
-                "variableIdentifier=" + variableIdentifier +
+                "variableName=" + variableName +
                 ", variableValue=" + variableValue +
                 '}';
     }

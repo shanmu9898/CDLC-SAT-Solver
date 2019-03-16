@@ -54,12 +54,7 @@ public class InputParser {
             if(!s.equals("0")){
                 int variableIdentifier = Integer.parseInt(s);
                 Variable variable;
-                if (variableIdentifier > 0){
-                    variable = new Variable(variableIdentifier, true);
-                } else {
-                    variable = new Variable(variableIdentifier * -1, false);
-                }
-
+                variable =new  Variable(variableIdentifier, true);
                 tempClause.add(variable);
             }
 

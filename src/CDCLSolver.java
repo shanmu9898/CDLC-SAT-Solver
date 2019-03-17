@@ -1,3 +1,4 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -21,7 +22,7 @@ public class CDCLSolver {
     int currentDecisionLevel;
     Clause lastDecidedClause;
     ArrayList<Variable> lastDecidedVariables;
-    HashMap<Integer, Integer> variablesAssigment;
+    HashMap<Integer, Integer> variablesAssignment;
 
     public CDCLSolver(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
@@ -35,7 +36,7 @@ public class CDCLSolver {
     }
 
     public String solution() {
-        initalSetUp(); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
+        initialSetUp(formula); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
         while(numberOfVariablesAssigned != totalNumberOfVariables){
             int value = unitpropogation();
 
@@ -70,6 +71,19 @@ public class CDCLSolver {
 
     }
 
+    private void initialSetUp(ArrayList<Clause> formula) {
+        for(Clause c: formula) {
+            for (int i=0; i<c.getOrVariables().size(); i++) {
+                Variable current = c.getOrVariables().get(i);
+                decisionLevelAssigned.put(current.getVariableName(), -1);
+                variablesAssignment.put(current.getVariableName(), 0);
+            }
+        }
+        for(int i=0; i<totalNumberOfVariables; i++) {
+
+        }
+    }
+
     private void backtrack() {
         int counter = 0;
         while(counter == 0 && valuesAlreadyAssigned.size() != 0) {
@@ -77,14 +91,14 @@ public class CDCLSolver {
                 // This is the deduced variables
                 Variable variable = valuesAlreadyAssigned.remove(i);
                 if(!(lastDecidedVariables.get(lastDecidedVariables.size() - 1) == (valuesAlreadyAssigned.get(i)))) {
-                    variablesAssigment.put(variable.getVariableName(), 0);
+                    variablesAssignment.put(variable.getVariableName(), 0);
                     counter = 0;
 
                 }else {
                     lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
 
                     /* If 'true' has already been selected we now choose 'false'*/
-                    if(variablesAssigment.get(variable.getVariableName()) == 1)
+                    if(variablesAssignment.get(variable.getVariableName()) == 1)
                     {
                         if(variable.getVariableValue()) {
                             variable.setVariableValue(false);
@@ -93,7 +107,7 @@ public class CDCLSolver {
                         }
 
                         valuesAlreadyAssigned.add(variable);
-                        variablesAssigment.put(variable.getVariableName(), 2);
+                        variablesAssignment.put(variable.getVariableName(), 2);
 
                         lastDecidedVariables.add(variable);
 
@@ -102,7 +116,7 @@ public class CDCLSolver {
                     else
                     {
                         lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
-                        variablesAssigment.put(variable.getVariableName(), 0);
+                        variablesAssignment.put(variable.getVariableName(), 0);
                     }
                 }
             }

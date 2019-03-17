@@ -75,12 +75,10 @@ public class CDCLSolver {
         for(Clause c: formula) {
             for (int i=0; i<c.getOrVariables().size(); i++) {
                 Variable current = c.getOrVariables().get(i);
+                current.modVariableName();
                 decisionLevelAssigned.put(current.getVariableName(), -1);
                 variablesAssignment.put(current.getVariableName(), 0);
             }
-        }
-        for(int i=0; i<totalNumberOfVariables; i++) {
-
         }
     }
 
@@ -323,7 +321,10 @@ public class CDCLSolver {
         }
         var.setVariableValue(val);
         numberOfVariablesAssigned++;
+        var.modVariableName();
         decisionLevelAssigned.put(var.getVariableName(), currentDecisionLevel);
         valuesAlreadyAssigned.add(var);
+        variablesAssignment.put(var.getVariableName(), 1);
+        lastDecidedVariables.add(var);
     }
 }

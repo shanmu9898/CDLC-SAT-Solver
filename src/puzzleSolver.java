@@ -128,7 +128,7 @@ public class puzzleSolver {
             for (int j=0; j<5; j++) {
                 System.out.print(pet(i,j+1) + " ");
             }
-            System.out.println("0");
+            System.out.println(" 0");
             for (int j=0; j<5; j++) {
                 //System.out.println(pet(i,j+1) + "0");
                 for (int k=0; k<j; k++) {
@@ -162,8 +162,8 @@ public class puzzleSolver {
             System.out.println(-(houseColour(green, i+1)) + " "+ (beverage(coffee, i+1)) + " 0");
             System.out.println((houseColour(green, i+1)) + " "+ -(beverage(coffee, i+1)) + " 0");
 
-            System.out.println(-(cigar(pallMall, i+1)) + " "+ (pet(bird, i+1)));
-            System.out.println((cigar(pallMall, i+1)) + " "+ -(pet(bird, i+1)));
+            System.out.println(-(cigar(pallMall, i+1)) + " "+ (pet(bird, i+1)) + " 0");
+            System.out.println((cigar(pallMall, i+1)) + " "+ -(pet(bird, i+1)) + " 0");
 
             System.out.println(-(houseColour(yellow, i+1)) + " "+ (cigar(dunhill, i+1)) + " 0");
             System.out.println((houseColour(yellow, i+1)) + " "+ -(cigar(dunhill, i+1)) + " 0");

@@ -1,12 +1,34 @@
 public class Variable {
     int variableName;
     boolean variableValue;
+    int assignmentCount;
 
 
     public Variable(int variableName, boolean variableValue){
         this.variableName = variableName;
         this.variableValue = variableValue;
+        int assigntmentCount = 0;
 
+    }
+
+    public int getAssignmentCount() {
+        return assignmentCount;
+    }
+
+    public void modVariableName() {
+        variableName = Math.abs(variableName);
+    }
+
+    public void incrAssignmentCount() {
+        assignmentCount++;
+    }
+
+    public void decAssignmentCount() {
+        assignmentCount--;
+    }
+
+    public void clearAssignmentCount() {
+        assignmentCount = 0;
     }
 
     public int getVariableName() {

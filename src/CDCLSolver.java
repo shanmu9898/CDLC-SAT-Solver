@@ -33,6 +33,8 @@ public class CDCLSolver {
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
         this.valuesAlreadyAssigned = new ArrayList<Variable>();
+        this.variablesAssignment = new HashMap<Integer, Integer>();
+        this.lastDecidedVariables = new ArrayList<Variable>();
     }
 
     public String solution() {
@@ -75,9 +77,9 @@ public class CDCLSolver {
         for(Clause c: formula) {
             for (int i=0; i<c.getOrVariables().size(); i++) {
                 Variable current = c.getOrVariables().get(i);
-                current.modVariableName();
-                decisionLevelAssigned.put(current.getVariableName(), -1);
-                variablesAssignment.put(current.getVariableName(), 0);
+                Variable temp = current.modVariableName();
+                decisionLevelAssigned.put(temp.getVariableName(), -1);
+                variablesAssignment.put(temp.getVariableName(), 0);
             }
         }
     }
@@ -88,14 +90,15 @@ public class CDCLSolver {
             for(int i = valuesAlreadyAssigned.size() - 1; i >= 0 ; i--) {
                 // This is the deduced variables
                 Variable variable = valuesAlreadyAssigned.remove(i);
-                if(!(lastDecidedVariables.get(lastDecidedVariables.size() - 1) == (valuesAlreadyAssigned.get(i)))) {
+                if(!(lastDecidedVariables.get(lastDecidedVariables.size() - 1) == (variable))) {
                     variablesAssignment.put(variable.getVariableName(), 0);
+                    decisionLevelAssigned.put(variable.getVariableName(), -1);
                     counter = 0;
 
                 }else {
                     lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
 
-                    /* If 'true' has already been selected we now choose 'false'*/
+                   // We choose alternate values here if one value has been assigned
                     if(variablesAssignment.get(variable.getVariableName()) == 1)
                     {
                         if(variable.getVariableValue()) {
@@ -115,6 +118,7 @@ public class CDCLSolver {
                     {
                         lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
                         variablesAssignment.put(variable.getVariableName(), 0);
+                        decisionLevelAssigned.put(variable.getVariableName(), -1);
                     }
                 }
             }
@@ -129,7 +133,8 @@ public class CDCLSolver {
             int numberOfUnassignedVariables = 0;
             ArrayList<Variable> tempdisjunc = c.getOrVariables();
             for (Variable v : tempdisjunc) {
-                if(decisionLevelAssigned.get(v.getVariableName()) == -1) {
+                Variable temp = v.modVariableName();
+                if(decisionLevelAssigned.get(temp.getVariableName()) == -1) {
                     numberOfUnassignedVariables++;
                 }
             }
@@ -160,8 +165,9 @@ public class CDCLSolver {
                 } else {
                     for(Variable v : unitLiteralAvailable.getValue()) {
                         v.incrAssignmentCount();
-                        v.modVariableName();
-                        valuesAlreadyAssigned.add(v);
+                        Variable temp = v.modVariableName();
+                        valuesAlreadyAssigned.add(temp);
+                        decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
                         lastDecidedClause = c;
                     }
                 }
@@ -191,7 +197,7 @@ public class CDCLSolver {
         ArrayList<Variable> variablesToAdd = new ArrayList<Variable>();
         for(Variable v : value) {
             int variableNameToDeal = v.getVariableName();
-            if(decisionLevelAssigned.get((Math.abs(variableNameToDeal)))  != 1) {
+            if(decisionLevelAssigned.get((Math.abs(variableNameToDeal)))  != -1) {
                 int index = valuesAlreadyAssigned.indexOf(v);
                 Variable variableInAssigned = valuesAlreadyAssigned.get(index);
 
@@ -225,7 +231,8 @@ public class CDCLSolver {
             }
         } else {
             for (Variable v : tempdisjunc) {
-                if(decisionLevelAssigned.get(v.getVariableName()) == -1) {
+                Variable temp = v.modVariableName();
+                if(decisionLevelAssigned.get(temp.getVariableName()) == -1) {
                     numberOfUnassignedVariables++;
                     unassignedVariable = v;
                 }
@@ -253,10 +260,11 @@ public class CDCLSolver {
             valuesAssignedFromUnitProp.add(unassignedVariable);
             return valuesAssignedFromUnitProp;
         } else {
-            ArrayList<Variable> tempdisjunc = c.getOrVariables();
+            ArrayList<Variable> tempdisjunc1 = c.getOrVariables();
+            ArrayList<Variable> tempdisjunc = (ArrayList<Variable>) tempdisjunc1.clone();
             tempdisjunc.remove(unassignedVariable);
             boolean truthValue = calculateTruthOfClause(tempdisjunc);
-            if(truthValue = false) {
+            if(truthValue == false) {
                 if(unassignedVariable.getVariableName() < 0) {
                     unassignedVariable.setVariableValue(false);
                 } else {
@@ -282,12 +290,13 @@ public class CDCLSolver {
         int numberOfTrueVariables = 0;
         for(Variable v : tempdisjunc) {
             if(v.getVariableName() < 0) {
-                v.modVariableName();
-                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(v)).getVariableValue()) {
+                Variable temp = v.modVariableName();
+                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
                     numberOfTrueVariables++;
                 }
             } else {
-                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(v)).getVariableValue()) {
+                Variable temp = v.modVariableName();
+                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
                     numberOfTrueVariables++;
                 }
             }
@@ -321,10 +330,10 @@ public class CDCLSolver {
         }
         var.setVariableValue(val);
         numberOfVariablesAssigned++;
-        var.modVariableName();
-        decisionLevelAssigned.put(var.getVariableName(), currentDecisionLevel);
-        valuesAlreadyAssigned.add(var);
-        variablesAssignment.put(var.getVariableName(), 1);
-        lastDecidedVariables.add(var);
+        Variable temp = var.modVariableName();
+        decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(temp);
+        variablesAssignment.put(temp.getVariableName(), 1);
+        lastDecidedVariables.add(temp);
     }
 }

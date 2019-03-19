@@ -15,8 +15,10 @@ public class Variable {
         return assignmentCount;
     }
 
-    public void modVariableName() {
-        variableName = Math.abs(variableName);
+    public Variable modVariableName() {
+       int newVariableName = Math.abs(variableName);
+       boolean newValue = this.variableValue;
+       return new Variable(newVariableName, newValue);
     }
 
     public void incrAssignmentCount() {

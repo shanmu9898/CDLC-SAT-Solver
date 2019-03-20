@@ -69,8 +69,8 @@ public class CDCLSolver {
                 backtrack();
             }
         }
-        return "SAT";
 
+        return "SAT";
     }
 
     private void initialSetUp(ArrayList<Clause> formula) {
@@ -116,7 +116,9 @@ public class CDCLSolver {
                     /* Both values chosen. Restore working set for backtrack */
                     else
                     {
-                        lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
+                        if(lastDecidedVariables.size() >=1) {
+                            lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
+                        }
                         variablesAssignment.put(variable.getVariableName(), 0);
                         decisionLevelAssigned.put(variable.getVariableName(), -1);
                     }
@@ -129,6 +131,7 @@ public class CDCLSolver {
     }
 
     private boolean checkIfValid() {
+        boolean isValid = true;
         for(Clause c : formula){
             int numberOfUnassignedVariables = 0;
             ArrayList<Variable> tempdisjunc = c.getOrVariables();
@@ -138,15 +141,14 @@ public class CDCLSolver {
                     numberOfUnassignedVariables++;
                 }
             }
-            if(numberOfUnassignedVariables == 0) {
-              if(!calculateTruthOfClause(tempdisjunc)){
-                  //TODO:Can include some kind of heuristic to learn here
-                  return true;
-              }
+            if(numberOfUnassignedVariables != 0) {
+                return false;
+            } else {
+                isValid = isValid && calculateTruthOfClause(tempdisjunc);
             }
 
         }
-        return false;
+        return isValid;
 
 
     }
@@ -161,7 +163,7 @@ public class CDCLSolver {
                 Pair<Integer, ArrayList<Variable>> isConflicting = checkConflict(unitLiteralAvailable.getValue(), valuesAlreadyAssigned);
                 if(isConflicting.getKey() == 1) {
                     conflictLearn(c, isConflicting.getValue());
-                    return value = -1;
+                    return -1;
                 } else {
                     for(Variable v : unitLiteralAvailable.getValue()) {
                         v.incrAssignmentCount();
@@ -174,6 +176,7 @@ public class CDCLSolver {
                 value = 1;
             }
         }
+        System.out.println("value is" + value);
         return value;
     }
 
@@ -331,6 +334,7 @@ public class CDCLSolver {
         var.setVariableValue(val);
         numberOfVariablesAssigned++;
         Variable temp = var.modVariableName();
+        System.out.println(temp);
         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);

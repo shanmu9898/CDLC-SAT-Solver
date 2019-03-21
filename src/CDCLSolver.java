@@ -50,6 +50,10 @@ public class CDCLSolver {
                 //TODO: add this to the valuesAlreadyAssigned Map
             } else if (value == 1) {
                 if(checkIfValid()) {
+                    return "SAT";
+                } else if (lastDecidedVariables.size() != 0 && !checkIfValid()) {
+
+                }
                     if(lastDecidedVariables.size() == 0) {
                         return "UNSAT";
                     }

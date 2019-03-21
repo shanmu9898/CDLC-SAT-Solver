@@ -42,27 +42,29 @@ public class CDCLSolver {
         while(numberOfVariablesAssigned != totalNumberOfVariables){
             int value = unitpropogation();
 
-            if(value == 0) {
+            if(value == 0) { // unit prop not done (no literal)
                 guessABranchingVariable(formula);
                 currentDecisionLevel++;
                 //TODO: increment the number of variables assigned
                 //TODO: add it to the decisionLevelAssigned DS (with variable name, decisionLevel)
                 //TODO: add this to the valuesAlreadyAssigned Map
-            } else if (value == 1) {
+            } else if (value == 1) { //there was a literal
                 if(checkIfValid()) {
                     return "SAT";
-                } else if (lastDecidedVariables.size() != 0 && !checkIfValid()) {
-
-                }
-                    if(lastDecidedVariables.size() == 0) {
-                        return "UNSAT";
-                    }
-
+                } else if (lastDecidedVariables.size() != 0 && !checkIfValid()) { //there was smth guessed, and failed
                     backtrack();
 
-                    if(valuesAlreadyAssigned.size() == 0) {
+                }
+                else {
+                    if(lastDecidedVariables.size() == 0) { //not guessed
                         return "UNSAT";
                     }
+
+                    //backtrack();
+
+                    /* if(valuesAlreadyAssigned.size() == 0) {
+                        return "UNSAT";
+                    } */
                 }
             } else if (value == -1){
 

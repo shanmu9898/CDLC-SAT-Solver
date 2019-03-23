@@ -51,11 +51,16 @@ public class CDCLSolver {
             } else if (value == 1) { //there was a literal
                 if(checkIfValid()) {
                     return "SAT";
-                } else if (lastDecidedVariables.size() != 0 && !checkIfValid()) { //there was smth guessed, and failed
-                    backtrack();
-
                 }
-                else {
+                else if (!checkIfValid()) { //there was smth guessed, and failed
+                    if(lastDecidedVariables.size() != 0) {
+                        backtrack();
+                    }
+                    else { //nth was guessed
+                        return "UNSAT";
+                    }
+                }
+                /* else {
                     if(lastDecidedVariables.size() == 0) { //not guessed
                         return "UNSAT";
                     }
@@ -64,8 +69,8 @@ public class CDCLSolver {
 
                     /* if(valuesAlreadyAssigned.size() == 0) {
                         return "UNSAT";
-                    } */
-                }
+                    }
+                } */
             } else if (value == -1){
 
                 if(lastDecidedVariables.size() == 0) {
@@ -136,7 +141,7 @@ public class CDCLSolver {
 
     }
 
-    private boolean checkIfValid() {
+    private boolean checkIfValid() { //if at least 1 variable in each clause is assigned
         boolean isValid = true;
         for(Clause c : formula){
             int numberOfUnassignedVariables = 0;
@@ -147,7 +152,7 @@ public class CDCLSolver {
                     numberOfUnassignedVariables++;
                 }
             }
-            if(numberOfUnassignedVariables != 0) {
+            if(numberOfUnassignedVariables == tempdisjunc.size()) {
                 return false;
             } else {
                 isValid = isValid && calculateTruthOfClause(tempdisjunc);
@@ -298,15 +303,24 @@ public class CDCLSolver {
     private boolean calculateTruthOfClause(ArrayList<Variable> tempdisjunc) {
         int numberOfTrueVariables = 0;
         for(Variable v : tempdisjunc) {
+            System.out.println(v);
             if(v.getVariableName() < 0) {
                 Variable temp = v.modVariableName();
-                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
-                    numberOfTrueVariables++;
+                if (valuesAlreadyAssigned.indexOf(temp) >= 0) {
+                    if (!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
+                        numberOfTrueVariables++;
+                    }
                 }
             } else {
                 Variable temp = v.modVariableName();
-                if(!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
-                    numberOfTrueVariables++;
+                /* System.out.println(v.modVariableName() + "v mod");
+                System.out.println(temp + "just variable temp");
+                System.out.println("temp is" + valuesAlreadyAssigned.indexOf(temp));
+                System.out.println(valuesAlreadyAssigned.indexOf(temp)); */
+                if (valuesAlreadyAssigned.indexOf(temp) >= 0) {
+                    if (!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
+                        numberOfTrueVariables++;
+                    }
                 }
             }
         }

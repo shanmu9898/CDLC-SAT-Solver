@@ -313,10 +313,6 @@ public class CDCLSolver {
                 }
             } else {
                 Variable temp = v.modVariableName();
-                /* System.out.println(v.modVariableName() + "v mod");
-                System.out.println(temp + "just variable temp");
-                System.out.println("temp is" + valuesAlreadyAssigned.indexOf(temp));
-                System.out.println(valuesAlreadyAssigned.indexOf(temp)); */
                 if (valuesAlreadyAssigned.indexOf(temp) >= 0) {
                     if (!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
                         numberOfTrueVariables++;

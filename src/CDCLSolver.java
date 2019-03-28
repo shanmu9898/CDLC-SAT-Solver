@@ -23,6 +23,7 @@ public class CDCLSolver {
     Clause lastDecidedClause;
     ArrayList<Variable> lastDecidedVariables;
     HashMap<Integer, Integer> variablesAssignment;
+    boolean guessHasStarted = false;
 
     public CDCLSolver(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
@@ -52,11 +53,11 @@ public class CDCLSolver {
                 if(checkIfValid()) {
                     return "SAT";
                 }
-                else if (!checkIfValid()) { //there was smth guessed, and failed
+                else if (!checkIfValid() && guessHasStarted) { //there was smth guessed, and failed
                     if(lastDecidedVariables.size() != 0) {
                         backtrack();
                     }
-                    else { //nth was guessed
+                    else { //nth was guessed/Users/hyma/Desktop/CDLC-SAT-Solver/src/simple3.cnf
                         return "UNSAT";
                     }
                 }
@@ -182,12 +183,14 @@ public class CDCLSolver {
                         valuesAlreadyAssigned.add(temp);
                         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
                         lastDecidedClause = c;
+                        System.out.println("Variable prop " + temp);
                     }
                 }
                 value = 1;
             }
         }
         System.out.println("value is" + value);
+
         return value;
     }
 
@@ -253,7 +256,12 @@ public class CDCLSolver {
             }
             if(numberOfUnassignedVariables == 1) {
                 ArrayList<Variable> valuesAssignedFromUnitProp = checkAndInputValueForVariable(unassignedVariable, c);
-                returnValues = new Pair<Integer, ArrayList<Variable>>(1, valuesAssignedFromUnitProp);
+                if(valuesAssignedFromUnitProp.size() != 0) {
+                    returnValues = new Pair<Integer, ArrayList<Variable>>(1, valuesAssignedFromUnitProp);
+                } else {
+                    returnValues = new Pair<Integer, ArrayList<Variable>>(0, new ArrayList<Variable>());
+                }
+
             } else {
                 returnValues = new Pair<Integer, ArrayList<Variable>>(0, new ArrayList<Variable>());
             }
@@ -286,12 +294,12 @@ public class CDCLSolver {
                 }
                 valuesAssignedFromUnitProp.add(unassignedVariable);
             } else {
-                if(unassignedVariable.getVariableName() < 0) {
-                    unassignedVariable.setVariableValue(false);
-                } else {
-                    unassignedVariable.setVariableValue(true);
-                }
-                valuesAssignedFromUnitProp.add(unassignedVariable);
+//                if(unassignedVariable.getVariableName() < 0) {
+//                    unassignedVariable.setVariableValue(false);
+//                } else {
+//                    unassignedVariable.setVariableValue(true);
+//                }
+//                valuesAssignedFromUnitProp.add(unassignedVariable);
             }
         }
 
@@ -303,7 +311,7 @@ public class CDCLSolver {
     private boolean calculateTruthOfClause(ArrayList<Variable> tempdisjunc) {
         int numberOfTrueVariables = 0;
         for(Variable v : tempdisjunc) {
-            System.out.println(v);
+            //System.out.println(v);
             if(v.getVariableName() < 0) {
                 Variable temp = v.modVariableName();
                 if (valuesAlreadyAssigned.indexOf(temp) >= 0) {
@@ -329,6 +337,7 @@ public class CDCLSolver {
 
     private void guessABranchingVariable(ArrayList<Clause> formula ) {
         Random randomClauseGenerator = new Random();
+        guessHasStarted = true;
         int index = randomClauseGenerator.nextInt(formula.size());
         Clause c = formula.get(index);
         pickRandomVariable(c);

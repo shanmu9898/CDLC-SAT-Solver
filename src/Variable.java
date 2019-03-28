@@ -16,6 +16,17 @@ public class Variable {
     }
 
     public Variable modVariableName() {
+        /* boolean newValue;
+        if (variableName<0) {
+            if (this.variableValue == false) {
+                newValue = true;
+            } else {
+                newValue = false;
+            }
+        }
+        else {
+            newValue = this.variableValue;
+        } */
        int newVariableName = Math.abs(variableName);
        boolean newValue = this.variableValue;
        return new Variable(newVariableName, newValue);
@@ -54,7 +65,7 @@ public class Variable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Variable variable = (Variable) o;
-        return variableName == variable.variableName;
+        return Math.abs(variableName) == Math.abs(variable.variableName);
     }
 
     @Override

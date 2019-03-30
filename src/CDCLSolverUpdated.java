@@ -5,7 +5,7 @@ import java.util.Random;
 
 import javafx.util.Pair;
 
-public class CDCLSolver {
+public class CDCLSolverUpdated {
     // While not all variables are assigned or the forumula is not satisfied
     //      guess a variable
     //      increase the decision level
@@ -40,49 +40,30 @@ public class CDCLSolver {
 
     public String solution() {
         initialSetUp(formula); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
-        while(numberOfVariablesAssigned != totalNumberOfVariables){
-            int value = unitpropogation(); // Should be changed to make it loop until all unit prop is done and it should check for conflicts in the start itself.
 
-            if(value == 0) { // unit prop not done (no literal)
-                guessABranchingVariable(formula);
-                currentDecisionLevel++;
-                //TODO: increment the number of variables assigned
-                //TODO: add it to the decisionLevelAssigned DS (with variable name, decisionLevel)
-                //TODO: add this to the valuesAlreadyAssigned Map
-            } else if (value == 1) { //there was a literal
-                if(checkIfValid()) {
-                    return "SAT";
-                }
-                else if (!checkIfValid() && guessHasStarted) { //there was smth guessed, and failed
-                    if(lastDecidedVariables.size() != 0) {
-                        backtrack();
-                    }
-                    else { //nth was guessed/Users/hyma/Desktop/CDLC-SAT-Solver/src/simple3.cnf
-                        return "UNSAT";
-                    }
-                }
-                /* else {
-                    if(lastDecidedVariables.size() == 0) { //not guessed
-                        return "UNSAT";
-                    }
-
-                    //backtrack();
-
-                    /* if(valuesAlreadyAssigned.size() == 0) {
-                        return "UNSAT";
-                    }
-                } */
-            } else if (value == -1){
-
-                if(lastDecidedVariables.size() == 0) {
-                    return "UNSAT";
-                }
-
-                backtrack();
-            }
+        if(unitpropogation() == -1) {
+            return "UNSAT";
         }
 
+        currentDecisionLevel = 0;
+
+        while(numberOfVariablesAssigned != totalNumberOfVariables) {
+            guessABranchingVariable(formula);
+            currentDecisionLevel++;
+            if(unitpropogation() == -1) {
+                int decisionLevelToBackTrack = conflictAnalysis(formula, valuesAlreadyAssigned);
+                if(decisionLevelToBackTrack < 0) {
+                    return "UNSAT";
+                } else {
+                    backtrack(formula, valuesAlreadyAssigned, decisionLevelToBackTrack);
+                    currentDecisionLevel = decisionLevelToBackTrack;
+                }
+            }
+
+        }
         return "SAT";
+
+
     }
 
     private void initialSetUp(ArrayList<Clause> formula) {
@@ -110,7 +91,7 @@ public class CDCLSolver {
                 }else {
                     lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
 
-                   // We choose alternate values here if one value has been assigned
+                    // We choose alternate values here if one value has been assigned
                     if(variablesAssignment.get(variable.getVariableName()) == 1)
                     {
                         if(variable.getVariableValue()) {

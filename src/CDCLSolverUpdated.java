@@ -14,7 +14,6 @@ public class CDCLSolverUpdated {
 
     HashMap<Integer, Integer> decisionLevelAssigned;
     ArrayList<Variable> valuesAlreadyAssigned;
-    boolean[] solution;
     int numberOfVariablesAssigned;
     int totalNumberOfClauses;
     int totalNumberOfVariables;
@@ -25,17 +24,19 @@ public class CDCLSolverUpdated {
     HashMap<Integer, Integer> variablesAssignment;
     boolean guessHasStarted = false;
 
+
     public CDCLSolverUpdated(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
         this.totalNumberOfVariables = totalNumberOfVariables;
         this.formula = formula;
         this.numberOfVariablesAssigned = 0;
-        this.solution = new boolean[totalNumberOfVariables];
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
         this.valuesAlreadyAssigned = new ArrayList<Variable>();
-        this.variablesAssignment = new HashMap<Integer, Integer>();
+        this.variablesAssignment = new HashMap<Integer, Integer>(); // Should variables assignment be increased when it is unit propogated?
         this.lastDecidedVariables = new ArrayList<Variable>();
+
+
     }
 
     public String solution() {
@@ -55,8 +56,13 @@ public class CDCLSolverUpdated {
                 if(decisionLevelToBackTrack < 0) {
                     return "UNSAT";
                 } else {
-                    backtrack(formula, valuesAlreadyAssigned, decisionLevelToBackTrack);
-                    currentDecisionLevel = decisionLevelToBackTrack;
+                    int code = backtrack(formula, valuesAlreadyAssigned, decisionLevelToBackTrack);
+                    if(code == 1) {
+                        currentDecisionLevel = decisionLevelToBackTrack;
+                    } else {
+                        return "UNSAT";
+                    }
+
                 }
             }
 
@@ -77,48 +83,43 @@ public class CDCLSolverUpdated {
         }
     }
 
-    private void backtrack() {
-        int counter = 0;
-        while(counter == 0 && valuesAlreadyAssigned.size() != 0) {
-            for(int i = valuesAlreadyAssigned.size() - 1; i >= 0 ; i--) {
-                // This is the deduced variables
-                Variable variable = valuesAlreadyAssigned.remove(i);
-                if(!(lastDecidedVariables.get(lastDecidedVariables.size() - 1) == (variable))) {
-                    variablesAssignment.put(variable.getVariableName(), 0);
-                    decisionLevelAssigned.put(variable.getVariableName(), -1);
-                    counter = 0;
+    private int backtrack(ArrayList<Clause> formula, ArrayList<Variable> valuesAlreadyAssigned, int decisionLevelToBackTrack) {
+        int code = 0;
+        for(Variable v : valuesAlreadyAssigned) {
+            if(decisionLevelAssigned.get(v.getVariableName()) > decisionLevelToBackTrack) {
+                variablesAssignment.put(v.getVariableName(), 0);
+                decisionLevelAssigned.put(v.getVariableName(), -1);
+                valuesAlreadyAssigned.remove(v);
+                lastDecidedVariables.remove(v);
+                numberOfVariablesAssigned--;
+                code = 1;
 
-                }else {
-                    lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
-
-                    // We choose alternate values here if one value has been assigned
-                    if(variablesAssignment.get(variable.getVariableName()) == 1)
-                    {
-                        if(variable.getVariableValue()) {
-                            variable.setVariableValue(false);
+            } else if (decisionLevelAssigned.get(v.getVariableName()) == decisionLevelToBackTrack) {
+                if(lastDecidedVariables.contains(v)) {
+                    if(variablesAssignment.get(v.getVariableName()) == 1) {
+                        Variable temp = v.modVariableName();
+                        valuesAlreadyAssigned.remove(v);
+                        lastDecidedVariables.remove(v);
+                        if(temp.getVariableValue()) {
+                            temp.setVariableValue(false);
                         } else {
-                            variable.setVariableValue(true);
+                            temp.setVariableValue(true);
                         }
+                        valuesAlreadyAssigned.add(temp);
+                        lastDecidedVariables.add(temp);
+                        variablesAssignment.put(temp.getVariableName(),2);
+                        code = 1;
+                    }else if (variablesAssignment.get(v.getVariableName()) == 2) {
+                        code = 2;
+                        return code;
 
-                        valuesAlreadyAssigned.add(variable);
-                        variablesAssignment.put(variable.getVariableName(), 2);
-
-                        lastDecidedVariables.add(variable);
-
-                    }
-                    /* Both values chosen. Restore working set for backtrack */
-                    else
-                    {
-                        if(lastDecidedVariables.size() >=1) {
-                            lastDecidedVariables.remove(lastDecidedVariables.size() - 1);
-                        }
-                        variablesAssignment.put(variable.getVariableName(), 0);
-                        decisionLevelAssigned.put(variable.getVariableName(), -1);
                     }
                 }
+
             }
 
         }
+        return code;
 
 
     }

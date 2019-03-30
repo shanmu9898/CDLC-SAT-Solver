@@ -25,7 +25,7 @@ public class CDCLSolverUpdated {
     HashMap<Integer, Integer> variablesAssignment;
     boolean guessHasStarted = false;
 
-    public CDCLSolver(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
+    public CDCLSolverUpdated(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
         this.totalNumberOfVariables = totalNumberOfVariables;
         this.formula = formula;
@@ -155,17 +155,15 @@ public class CDCLSolverUpdated {
             if(unitLiteralAvailable.getKey() == 1) {
                 Pair<Integer, ArrayList<Variable>> isConflicting = checkConflict(unitLiteralAvailable.getValue(), valuesAlreadyAssigned);
                 if(isConflicting.getKey() == 1) {
-                    conflictLearn(c, isConflicting.getValue());
                     return -1;
                 } else {
                     for(Variable v : unitLiteralAvailable.getValue()) {
-                        v.incrAssignmentCount();
                         Variable temp = v.modVariableName();
                         valuesAlreadyAssigned.add(temp);
                         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
-                        lastDecidedClause = c;
-                        System.out.println("Variable prop " + temp);
+                        numberOfVariablesAssigned++;
                     }
+                    unitpropogation();
                 }
                 value = 1;
             }
@@ -222,8 +220,8 @@ public class CDCLSolverUpdated {
         if(tempdisjunc.size() == 1) {
             if(decisionLevelAssigned.get(tempdisjunc.get(0).getVariableName()) == -1) {
                 unassignedVariable = tempdisjunc.get(0);
-                ArrayList<Variable> valuesAssignedFromUnitProp = checkAndInputValueForVariable(unassignedVariable, c);
-                returnValues = new Pair<Integer, ArrayList<Variable>>(1, valuesAssignedFromUnitProp);
+                ArrayList<Variable> variablesAssignedFromUnitProp = checkAndInputValueForVariable(unassignedVariable, c);
+                returnValues = new Pair<Integer, ArrayList<Variable>>(1, variablesAssignedFromUnitProp);
             } else {
                 returnValues = new Pair<Integer, ArrayList<Variable>>(0, new ArrayList<Variable>());
             }
@@ -236,9 +234,9 @@ public class CDCLSolverUpdated {
                 }
             }
             if(numberOfUnassignedVariables == 1) {
-                ArrayList<Variable> valuesAssignedFromUnitProp = checkAndInputValueForVariable(unassignedVariable, c);
-                if(valuesAssignedFromUnitProp.size() != 0) {
-                    returnValues = new Pair<Integer, ArrayList<Variable>>(1, valuesAssignedFromUnitProp);
+                ArrayList<Variable> variablesAssignedFromUnitProp = checkAndInputValueForVariable(unassignedVariable, c);
+                if(variablesAssignedFromUnitProp.size() != 0) {
+                    returnValues = new Pair<Integer, ArrayList<Variable>>(1, variablesAssignedFromUnitProp);
                 } else {
                     returnValues = new Pair<Integer, ArrayList<Variable>>(0, new ArrayList<Variable>());
                 }
@@ -255,12 +253,13 @@ public class CDCLSolverUpdated {
     private ArrayList<Variable> checkAndInputValueForVariable(Variable unassignedVariable, Clause c) {
         ArrayList<Variable> valuesAssignedFromUnitProp = new ArrayList<Variable>();
         if(c.getOrVariables().size() == 1) {
+            Variable temp = unassignedVariable.modVariableName();
             if(unassignedVariable.getVariableName() < 0) {
-                unassignedVariable.setVariableValue(false);
+                temp.setVariableValue(false);
             } else {
-                unassignedVariable.setVariableValue(true);
+                temp.setVariableValue(true);
             }
-            valuesAssignedFromUnitProp.add(unassignedVariable);
+            valuesAssignedFromUnitProp.add(temp);
             return valuesAssignedFromUnitProp;
         } else {
             ArrayList<Variable> tempdisjunc1 = c.getOrVariables();
@@ -268,19 +267,13 @@ public class CDCLSolverUpdated {
             tempdisjunc.remove(unassignedVariable);
             boolean truthValue = calculateTruthOfClause(tempdisjunc);
             if(truthValue == false) {
+                Variable temp = unassignedVariable.modVariableName();
                 if(unassignedVariable.getVariableName() < 0) {
-                    unassignedVariable.setVariableValue(false);
+                    temp.setVariableValue(false);
                 } else {
-                    unassignedVariable.setVariableValue(true);
+                    temp.setVariableValue(true);
                 }
-                valuesAssignedFromUnitProp.add(unassignedVariable);
-            } else {
-//                if(unassignedVariable.getVariableName() < 0) {
-//                    unassignedVariable.setVariableValue(false);
-//                } else {
-//                    unassignedVariable.setVariableValue(true);
-//                }
-//                valuesAssignedFromUnitProp.add(unassignedVariable);
+                valuesAssignedFromUnitProp.add(temp);
             }
         }
 

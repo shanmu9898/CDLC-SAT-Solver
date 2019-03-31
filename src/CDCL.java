@@ -7,7 +7,7 @@ public class CDCL {
         String inputFileName = sc.nextLine();
         InputParser parser = new InputParser();
         ArrayList<Clause> formula = parser.parse(inputFileName);
-        CDCLSolver cdclSolver = new CDCLSolver(parser.numberOfClauses, parser.numberOfVariables, formula);
+        CDCLSolverUpdated cdclSolver = new CDCLSolverUpdated(parser.numberOfClauses, parser.numberOfVariables, formula);
         String solution = cdclSolver.solution();
         System.out.println(solution);
     }

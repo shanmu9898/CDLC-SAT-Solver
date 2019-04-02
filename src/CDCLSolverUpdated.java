@@ -411,13 +411,16 @@ public class CDCLSolverUpdated {
 
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
         Variable var = c.getOrVariables().get(index);
-        Variable cloneVar = var.modVariableName();
+        if
+
+        /* Variable cloneVar = var.modVariableName();
         while(valuesAlreadyAssigned.contains(cloneVar)) {
             index = randomVariableGenerator.nextInt(c.getOrVariables().size());
             var = c.getOrVariables().get(index);
             cloneVar = var.modVariableName();
             System.out.println("In a loop");
-        }
+        } */
+
         Random ranValue = new Random();
         int value = ranValue.nextInt(2);
         boolean val = false;

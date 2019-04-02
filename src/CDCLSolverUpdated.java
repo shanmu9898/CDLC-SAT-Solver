@@ -411,7 +411,9 @@ public class CDCLSolverUpdated {
 
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
         Variable var = c.getOrVariables().get(index);
-        if
+        if (checkIsAssigned(var) == true) {
+            pickRandomVariable(c);
+        }
 
         /* Variable cloneVar = var.modVariableName();
         while(valuesAlreadyAssigned.contains(cloneVar)) {

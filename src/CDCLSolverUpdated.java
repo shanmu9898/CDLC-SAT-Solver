@@ -53,7 +53,7 @@ public class CDCLSolverUpdated {
 
         while(numberOfVariablesAssigned != totalNumberOfVariables) {
             guessABranchingVariable(formula);
-            currentDecisionLevel++;
+
             if(unitpropogation().getKey() == -1) {
                 Pair<Integer, ArrayList<Variable>> decisionLevelToBackTrack = conflictAnalysis(formula, valuesAlreadyAssigned, implicationGraph, unitpropogation().getValue(), variablesAssignment);
                 if(decisionLevelToBackTrack.getKey() < 0) {
@@ -68,9 +68,20 @@ public class CDCLSolverUpdated {
 
                 }
             }
+            currentDecisionLevel++;
+
         }
+        printArrayList(valuesAlreadyAssigned);
         return "SAT";
 
+
+    }
+
+    private void printArrayList(ArrayList<Variable> valuesAlreadyAssigned) {
+        System.out.println("Final Values are");
+        for(Variable v : valuesAlreadyAssigned) {
+            System.out.println(v);
+        }
 
     }
 
@@ -152,7 +163,8 @@ public class CDCLSolverUpdated {
             code = 2;
             return code;
         }
-        for(Variable v : valuesAlreadyAssigned) {
+        ArrayList<Variable> valuesAlreadyAssignedClone = (ArrayList<Variable>) valuesAlreadyAssigned.clone();
+        for(Variable v : valuesAlreadyAssignedClone) {
             if(decisionLevelAssigned.get(v.getVariableName()) > decisionLevelToBackTrack) {
                 if(lastDecidedVariables.contains(v) && variablesToLearn.contains(v)) {
                     variablesAssignment.put(v.getVariableName(), 1);
@@ -197,6 +209,13 @@ public class CDCLSolverUpdated {
                         return code;
 
                     }
+                } else {
+                    variablesAssignment.put(v.getVariableName(), 0);
+                    decisionLevelAssigned.put(v.getVariableName(), -1);
+                    valuesAlreadyAssigned.remove(v);
+                    lastDecidedVariables.remove(v);
+                    numberOfVariablesAssigned--;
+                    code = 1;
                 }
 
             }
@@ -253,7 +272,7 @@ public class CDCLSolverUpdated {
                 }
                 value = new Pair<>(1, new Variable(0,false));
             } else if (unitLiteralAvailable.getKey() == -1) {
-                value = new Pair<>(-1, unitPropogationVariables.get(0));
+                value = new Pair<>(-1, unitPropogationVariables.get(unitPropogationVariables.size() - 1));
             }
         }
 
@@ -382,7 +401,7 @@ public class CDCLSolverUpdated {
             } else {
                 Variable temp = v.modVariableName();
                 if (valuesAlreadyAssigned.indexOf(temp) >= 0) {
-                    if (!valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
+                    if (valuesAlreadyAssigned.get(valuesAlreadyAssigned.indexOf(temp)).getVariableValue()) {
                         numberOfTrueVariables++;
                     }
                 }
@@ -400,23 +419,30 @@ public class CDCLSolverUpdated {
         guessHasStarted = true;
         int index = randomClauseGenerator.nextInt(formula.size());
         Clause c = formula.get(index);
-        pickRandomVariable(c);
+        int value = pickRandomVariable(c);
+        while (value == 0) {
+            index = randomClauseGenerator.nextInt(formula.size());
+            c = formula.get(index);
+            value = pickRandomVariable(c);
+        }
     }
 
-    private void pickRandomVariable(Clause c) {
-        boolean isAssigned;
-
+    private int pickRandomVariable(Clause c) {
         c.getOrVariables();
         Random randomVariableGenerator = new Random();
-
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
         Variable var = c.getOrVariables().get(index);
         Variable cloneVar = var.modVariableName();
-        while(valuesAlreadyAssigned.contains(cloneVar)) {
+        int number = 0;
+        while (valuesAlreadyAssigned.contains(cloneVar)) {
             index = randomVariableGenerator.nextInt(c.getOrVariables().size());
             var = c.getOrVariables().get(index);
             cloneVar = var.modVariableName();
             System.out.println("In a loop");
+            number++;
+            if (number > 5) {
+                return 0;
+            }
         }
         Random ranValue = new Random();
         int value = ranValue.nextInt(2);
@@ -434,15 +460,6 @@ public class CDCLSolverUpdated {
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);
         lastDecidedVariables.add(temp);
-    }
-
-    private boolean checkIsAssigned(Variable var) {
-        boolean isAssigned = false;
-        for (Variable v: valuesAlreadyAssigned) {
-            if (v == var) {
-                isAssigned = true;
-            }
-        }
-        return isAssigned;
+        return 1;
     }
 }

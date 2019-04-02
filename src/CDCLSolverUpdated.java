@@ -59,7 +59,6 @@ public class CDCLSolverUpdated {
                     currentDecisionLevel = decisionLevelToBackTrack;
                 }
             }
-
         }
         return "SAT";
 
@@ -325,10 +324,18 @@ public class CDCLSolverUpdated {
     }
 
     private void pickRandomVariable(Clause c) {
+        boolean isAssigned;
+
         c.getOrVariables();
         Random randomVariableGenerator = new Random();
+
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
         Variable var = c.getOrVariables().get(index);
+
+        if (checkIsAssigned(var) == true ) {
+            pickRandomVariable(c);
+        }
+
         Random ranValue = new Random();
         int value = ranValue.nextInt(2);
         boolean val = false;
@@ -345,5 +352,15 @@ public class CDCLSolverUpdated {
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);
         lastDecidedVariables.add(temp);
+    }
+
+    private boolean checkIsAssigned(Variable var) {
+        boolean isAssigned = false;
+        for (Variable v: valuesAlreadyAssigned) {
+            if (v == var) {
+                isAssigned = true;
+            }
+        }
+        return isAssigned;
     }
 }

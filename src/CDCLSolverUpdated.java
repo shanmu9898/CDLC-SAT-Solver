@@ -411,8 +411,25 @@ public class CDCLSolverUpdated {
 
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
         Variable var = c.getOrVariables().get(index);
-        if (checkIsAssigned(var) == true) {
+        if (valuesAlreadyAssigned.contains(var)) {
             pickRandomVariable(c);
+        } else {
+            Random ranValue = new Random();
+            int value = ranValue.nextInt(2);
+            boolean val = false;
+            if (value == 0) {
+                val = false;
+            } else {
+                val = true;
+            }
+            var.setVariableValue(val);
+            numberOfVariablesAssigned++;
+            Variable temp = var.modVariableName();
+            System.out.println(temp);
+            decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
+            valuesAlreadyAssigned.add(temp);
+            variablesAssignment.put(temp.getVariableName(), 1);
+            lastDecidedVariables.add(temp);
         }
 
         /* Variable cloneVar = var.modVariableName();
@@ -422,26 +439,9 @@ public class CDCLSolverUpdated {
             cloneVar = var.modVariableName();
             System.out.println("In a loop");
         } */
-
-        Random ranValue = new Random();
-        int value = ranValue.nextInt(2);
-        boolean val = false;
-        if (value == 0) {
-            val = false;
-        } else {
-            val = true;
-        }
-        var.setVariableValue(val);
-        numberOfVariablesAssigned++;
-        Variable temp = var.modVariableName();
-        System.out.println(temp);
-        decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
-        valuesAlreadyAssigned.add(temp);
-        variablesAssignment.put(temp.getVariableName(), 1);
-        lastDecidedVariables.add(temp);
     }
 
-    private boolean checkIsAssigned(Variable var) {
+    /* private boolean checkIsAssigned(Variable var) {
         boolean isAssigned = false;
         for (Variable v: valuesAlreadyAssigned) {
             if (v == var) {
@@ -449,5 +449,5 @@ public class CDCLSolverUpdated {
             }
         }
         return isAssigned;
-    }
+    } */
 }

@@ -25,10 +25,12 @@ public class InputParser {
         try {
             reader = new BufferedReader(new FileReader(filename));
             String line = reader.readLine();
+            line.trim();
             int count = 1;
             while(line != null){
                 System.out.println(line);
-                String[] brokenVariables = line.split(" ");
+                line.trim();
+                String[] brokenVariables = line.split("\\s+");
                 if(brokenVariables[0].equals("p")){
                     this.numberOfVariables = Integer.parseInt(brokenVariables[2]);
                     this.numberOfClauses = Integer.parseInt(brokenVariables[3]);

@@ -29,7 +29,7 @@ public class InputParser {
             int count = 1;
             while(line != null){
                 System.out.println(line);
-                line.trim();
+                line = line.trim();
                 String[] brokenVariables = line.split("\\s+");
                 if(brokenVariables[0].equals("p")){
                     this.numberOfVariables = Integer.parseInt(brokenVariables[2]);

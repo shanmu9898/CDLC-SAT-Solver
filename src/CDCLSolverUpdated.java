@@ -78,6 +78,7 @@ public class CDCLSolverUpdated {
     }
 
     private void printArrayList(ArrayList<Variable> valuesAlreadyAssigned) {
+
         System.out.println("Final Values are");
         for(Variable v : valuesAlreadyAssigned) {
             System.out.println(v);

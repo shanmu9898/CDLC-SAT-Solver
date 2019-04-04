@@ -52,6 +52,12 @@ public class CDCLSolverUpdated {
         currentDecisionLevel = 0;
 
         while(numberOfVariablesAssigned != totalNumberOfVariables) {
+//            if(numberOfVariablesAssigned == 0) {
+//                pickChosenVariable(1, false);
+//            }else {
+//                guessABranchingVariable(formula);
+//            }
+
             guessABranchingVariable(formula);
 
             if(unitpropogation().getKey() == -1) {
@@ -71,7 +77,7 @@ public class CDCLSolverUpdated {
             currentDecisionLevel++;
 
         }
-        printArrayList(valuesAlreadyAssigned);
+        //printArrayList(valuesAlreadyAssigned);
         return "SAT";
 
 
@@ -263,13 +269,17 @@ public class CDCLSolverUpdated {
                 } else {
                     for(Variable v : unitLiteralAvailable.getValue()) {
                         Variable temp = v.modVariableName();
-                        System.out.println("Through unit prop " + temp + " has been added and unit prop will continue");
+                       // System.out.println("Through unit prop " + temp + " has been added and unit prop will continue");
                         valuesAlreadyAssigned.add(temp);
                         unitPropogationVariables.add(temp);
                         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
                         numberOfVariablesAssigned++;
                     }
-                    unitpropogation();
+                    Pair<Integer,Variable> returnUnitProp = unitpropogation();
+                    if(returnUnitProp.getKey() == -1) {
+                        value = new Pair<>(-1, unitPropogationVariables.get(unitPropogationVariables.size() - 1));
+                        return value;
+                    }
                 }
                 value = new Pair<>(1, new Variable(0,false));
             } else if (unitLiteralAvailable.getKey() == -1) {
@@ -428,6 +438,19 @@ public class CDCLSolverUpdated {
         }
     }
 
+    private int pickChosenVariable(int name, boolean value) {
+        Variable v = new Variable(name, value);
+        numberOfVariablesAssigned++;
+        Variable temp = v.modVariableName();
+        // System.out.println(temp);
+        decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(temp);
+        variablesAssignment.put(temp.getVariableName(), 1);
+        lastDecidedVariables.add(temp);
+        return 1;
+
+    }
+
     private int pickRandomVariable(Clause c) {
         c.getOrVariables();
         Random randomVariableGenerator = new Random();
@@ -439,7 +462,7 @@ public class CDCLSolverUpdated {
             index = randomVariableGenerator.nextInt(c.getOrVariables().size());
             var = c.getOrVariables().get(index);
             cloneVar = var.modVariableName();
-            System.out.println("In a loop");
+           // System.out.println("In a loop");
             number++;
             if (number > 5) {
                 return 0;
@@ -456,7 +479,7 @@ public class CDCLSolverUpdated {
         var.setVariableValue(val);
         numberOfVariablesAssigned++;
         Variable temp = var.modVariableName();
-        System.out.println(temp);
+       // System.out.println(temp);
         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);

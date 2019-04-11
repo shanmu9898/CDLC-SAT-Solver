@@ -1,8 +1,9 @@
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CDCL {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException{
         Scanner sc = new Scanner(System.in);
         String inputFileName = sc.nextLine();
         InputParser parser = new InputParser();

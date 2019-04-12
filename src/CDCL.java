@@ -11,6 +11,8 @@ public class CDCL {
         CDCLSolverUpdated cdclSolver = new CDCLSolverUpdated(parser.numberOfClauses, parser.numberOfVariables, formula);
         String solution = cdclSolver.solution();
         System.out.println(solution);
+
+
     }
 
 }

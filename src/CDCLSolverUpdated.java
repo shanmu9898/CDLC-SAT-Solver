@@ -250,7 +250,9 @@ public class CDCLSolverUpdated {
                 }
 
             } else if (decisionLevelAssigned.get(v.getVariableName()) == decisionLevelToBackTrack) {
-                currentDecisionLevel = decisionLevelToBackTrack;
+                if(decisionLevelToBackTrack > 0) {
+                    currentDecisionLevel = decisionLevelToBackTrack;
+                }
                 //edit
                 if(lastDecidedVariables.contains(v)) {
                     if(variablesAssignment.get(v.getVariableName()) == 1) {

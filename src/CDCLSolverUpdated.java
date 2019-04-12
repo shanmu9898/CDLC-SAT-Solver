@@ -210,9 +210,13 @@ public class CDCLSolverUpdated {
         System.out.println("size of values already assigned clone" + valuesAlreadyAssignedClone.size());
         for(Variable v : valuesAlreadyAssignedClone) {
             if(decisionLevelAssigned.get(v.getVariableName()) > decisionLevelToBackTrack) {
-                if(lastDecidedVariables.contains(v) && variablesToLearn.contains(v)) {
+                currentDecisionLevel = decisionLevelToBackTrack;
+                //edit
+                //if(lastDecidedVariables.contains(v) && variablesToLearn.contains(v))
+                if(variablesToLearn.contains(v)) {
                     variablesAssignment.put(v.getVariableName(), 1);
                     decisionLevelAssigned.put(v.getVariableName(), decisionLevelToBackTrack);
+
                     Variable temp = v.modVariableName();
                     if(temp.getVariableValue() == true) {
                         temp.setVariableValue(false);
@@ -221,7 +225,9 @@ public class CDCLSolverUpdated {
                     }
                     valuesAlreadyAssigned.remove(v);
                     valuesAlreadyAssigned.add(temp);
-                    lastDecidedVariables.remove(v);
+                    if(lastDecidedVariables.contains(v)) {
+                        lastDecidedVariables.remove(v);
+                    }
                     for(int i =0; i <= totalNumberOfVariables; i++) {
                         implicationGraph[i][v.getVariableName()] = 0;
                     }
@@ -243,8 +249,9 @@ public class CDCLSolverUpdated {
                     }
                 }
 
-
             } else if (decisionLevelAssigned.get(v.getVariableName()) == decisionLevelToBackTrack) {
+                currentDecisionLevel = decisionLevelToBackTrack;
+                //edit
                 if(lastDecidedVariables.contains(v)) {
                     if(variablesAssignment.get(v.getVariableName()) == 1) {
                         Variable temp = v.modVariableName();
@@ -387,8 +394,6 @@ public class CDCLSolverUpdated {
                 System.out.println("Unit Propogation exiting");
                 UnitPropDone = 1;
             }
-
-
         }
         return new Pair<>(0, new Variable(0, false));
 

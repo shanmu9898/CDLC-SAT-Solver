@@ -25,6 +25,14 @@ public class Clause {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Clause clauseTesting = (Clause) o;
+        return clauseTesting.getOrVariables().equals(getOrVariables());
+    }
+
+    @Override
     public String toString() {
         return "Clause{" +
                 "disjunctions=" + orVariables +

@@ -24,6 +24,8 @@ public class Clause {
         this.orVariables.add(variable);
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

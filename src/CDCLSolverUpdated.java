@@ -76,6 +76,7 @@ public class CDCLSolverUpdated {
 
             //chooseABranchingVariable(test);
             Pair<Integer, Variable> unitPropValue = unitpropogation();
+            System.out.println("Unit prop is over and the unitProp value is " + unitPropValue.getKey());
             backtracked = 0;
             if(unitPropValue.getKey() == -1) {
                 Pair<Integer, ArrayList<Variable>> decisionLevelToBackTrack = conflictAnalysis(formula, valuesAlreadyAssigned, implicationGraph, unitPropValue.getValue(), variablesAssignment);
@@ -131,6 +132,8 @@ public class CDCLSolverUpdated {
                     }
                 }
                 decisionToLevelToBackTrack--;
+                int decisionLevelToGoBack = backtrack(formula, valuesAlreadyAssigned, decisionToLevelToBackTrack, variablesToLearn);
+                return decisionLevelToGoBack;
             } else if (variablesAssignment.get(lastDecidedVariables.get(lastDecidedVariables.size() - 1).getVariableName()) == 1) {
                 for(Variable v : variableArrayListClone) {
                     if(decisionLevelAssigned.get(v.getVariableName()) == decisionToLevelToBackTrack) {

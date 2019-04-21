@@ -196,6 +196,38 @@ public class CDCLSolverUpdated {
 
         }
 
+        for(Variable v : variableArrayListClone) {
+            if (decisionLevelAssigned.get(v.getVariableName()) == key) {
+                if(lastDecidedVariables.contains(v)) {
+                    if(variablesAssignment.get(v.getVariableName()) == 1) {
+                        valuesAlreadyAssigned.remove(v);
+                        variablesAssignment.put(v.getVariableName(), 2);
+                        if (v.getVariableValue()) {
+                            v.setVariableValue(false);
+                        } else {
+                            v.setVariableValue(true);
+                        }
+                        valuesAlreadyAssigned.add(v);
+                        System.out.println("Variable " + v + " value has been reversed");
+
+                    } else  if (variablesAssignment.get(v.getVariableName()) == 2) {
+                        int backTrackLevel = backtrackUIP((key - 1), value);
+                        return backTrackLevel;
+                    }
+
+                } else {
+                    valuesAlreadyAssigned.remove(v);
+                    decisionLevelAssigned.put(v.getVariableName(), -1);
+                    variablesAssignment.put(v.getVariableName(), 0);
+                    numberOfVariablesAssigned--;
+                    for(int i = 1; i < totalNumberOfVariables; i++) {
+                        implicationGraph[i][v.getVariableName()] = 0;
+                    }
+                }
+            }
+
+        }
+
         return key;
 
     }
@@ -334,8 +366,11 @@ public class CDCLSolverUpdated {
             System.out.println("This has entered here");
             return null;
         }
-        formula.add(finalClauseToAdd);
-        totalNumberOfClauses++;
+        if(finalClauseToAdd.getOrVariables().size() != 0) {
+            formula.add(finalClauseToAdd);
+            totalNumberOfClauses++;
+        }
+
         return finalClauseToAdd;
     }
 

@@ -8,7 +8,7 @@ c              and more information in sat/contributed/iwama.
 c
 c NOTE: Satisfiable
 c
-p cnf 50 80
+p cnf 50 77
 16 17 30 0
 -17 22 30 0
 -17 -22 30 0

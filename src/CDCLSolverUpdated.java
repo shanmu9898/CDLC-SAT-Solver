@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Map;
 
 import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 

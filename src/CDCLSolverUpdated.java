@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,6 +24,7 @@ public class CDCLSolverUpdated {
     int totalNumberOfClauses;
     int totalNumberOfVariables;
     ArrayList<Clause> formula;
+    Map<Integer, Integer> newMap;
     int currentDecisionLevel;
     Clause lastDecidedClause;
     ArrayList<Variable> lastDecidedVariables;
@@ -37,6 +39,7 @@ public class CDCLSolverUpdated {
         this.totalNumberOfClauses = totalNumberOfClauses;
         this.totalNumberOfVariables = totalNumberOfVariables;
         this.formula = formula;
+        this.newMap = newMap;
         this.numberOfVariablesAssigned = 0;
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
@@ -51,6 +54,7 @@ public class CDCLSolverUpdated {
     }
 
     public String solution() {
+
         initialSetUp(formula); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
 
         if(unitpropogation().getKey() == -1) {
@@ -233,7 +237,7 @@ public class CDCLSolverUpdated {
     }
 
     private int backtrack(ArrayList<Clause> formula, ArrayList<Variable> valuesAlreadyAssigned, Integer decisionToLevelToBackTrack, ArrayList<Variable> variablesToLearn) {
-        System.out.println("Back Tracking to level" + decisionToLevelToBackTrack);
+       // System.out.println("Back Tracking to level" + decisionToLevelToBackTrack);
         ArrayList<Variable> variableArrayListClone = (ArrayList<Variable>) valuesAlreadyAssigned.clone();
         int finalBackTrack = 0;
         if(decisionToLevelToBackTrack == -1 || lastDecidedVariables.size() == 0) {
@@ -254,7 +258,7 @@ public class CDCLSolverUpdated {
                         for(int i = 1; i < totalNumberOfVariables; i++) {
                             implicationGraph[i][v.getVariableName()] = 0;
                         }
-                        System.out.println("Variable " + v + " has been removed");
+                       // System.out.println("Variable " + v + " has been removed");
 
                     }
                 }
@@ -273,7 +277,7 @@ public class CDCLSolverUpdated {
                                 v.setVariableValue(true);
                             }
                             valuesAlreadyAssigned.add(v);
-                            System.out.println("Variable " + v + " value has been reversed");
+                            //System.out.println("Variable " + v + " value has been reversed");
                         } else {
                             variablesAssignment.put(v.getVariableName(), 0);
                             decisionLevelAssigned.put(v.getVariableName(), -1);
@@ -281,7 +285,7 @@ public class CDCLSolverUpdated {
                                 implicationGraph[i][v.getVariableName()] = 0;
                             }
                             numberOfVariablesAssigned--;
-                            System.out.println("Variable " + v + " has been removed");
+                            //System.out.println("Variable " + v + " has been removed");
                         }
                     }
                 }
@@ -548,7 +552,7 @@ public class CDCLSolverUpdated {
             return variablesToLearn;
 
         } else {
-            System.out.println("Clause learnt was empty because it had 0 variables to learn from");
+            //System.out.println("Clause learnt was empty because it had 0 variables to learn from");
             return variablesToLearn;
         }
 
@@ -611,7 +615,7 @@ public class CDCLSolverUpdated {
                 unitPropDone = 0;
                 valuesAlreadyAssigned.addAll(tempUnitPropVariables);
                 for(Variable v : tempUnitPropVariables) {
-                    System.out.println("Variable being added by unit prop is" + v);
+                    //System.out.println("Variable being added by unit prop is" + v);
                     decisionLevelAssigned.put(v.getVariableName(), currentDecisionLevel);
                     numberOfVariablesAssigned++;
                     variablesAssignment.put(v.getVariableName(), 1);
@@ -765,7 +769,7 @@ public class CDCLSolverUpdated {
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);
         lastDecidedVariables.add(temp);
-        System.out.println(temp);
+        //System.out.println(temp);
     }
 
 
@@ -782,7 +786,7 @@ public class CDCLSolverUpdated {
 
     }
 
-    private int pickRandomVariable(Clause c) {
+    /* private int pickRandomVariable(Clause c) {
         c.getOrVariables();
         Random randomVariableGenerator = new Random();
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());
@@ -810,11 +814,48 @@ public class CDCLSolverUpdated {
         var.setVariableValue(val);
         numberOfVariablesAssigned++;
         Variable temp = var.modVariableName();
-        System.out.println(temp + " with decision level " + currentDecisionLevel);
+        //System.out.println(temp + " with decision level " + currentDecisionLevel);
+        decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(temp);
+        variablesAssignment.put(temp.getVariableName(), 1);
+        lastDecidedVariables.add(temp);
+        return 1;
+    } */
+
+    private int pickRandomVariable(Clause c) {
+        c.getOrVariables();
+        int flag = 1;
+        Variable var = c.getOrVariables().get(0);
+
+        for(int i=1; i<newMap.size(); i++) {
+            for(Variable v: valuesAlreadyAssigned) {
+                if(newMap.get(i) == v.getVariableName()) {
+                    flag = 1;
+                }
+            }
+            if (flag == 0) {
+                var.setVariableName(newMap.get(i));
+                break;
+            }
+        }
+
+        Random ranValue = new Random();
+        int value = ranValue.nextInt(2);
+        boolean val = false;
+        if (value == 0) {
+            val = false;
+        } else {
+            val = true;
+        }
+        var.setVariableValue(val);
+        numberOfVariablesAssigned++;
+        Variable temp = var.modVariableName();
+        //System.out.println(temp + " with decision level " + currentDecisionLevel);
         decisionLevelAssigned.put(temp.getVariableName(), currentDecisionLevel);
         valuesAlreadyAssigned.add(temp);
         variablesAssignment.put(temp.getVariableName(), 1);
         lastDecidedVariables.add(temp);
         return 1;
     }
+
 }

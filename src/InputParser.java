@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.*;
 
 import sun.tools.jstat.Literal;
 
@@ -13,6 +15,7 @@ public class InputParser {
     int numberOfVariables;
     int numberOfClauses;
     ArrayList<Clause> formula;
+    ArrayList<Integer> count;
 
     public InputParser() {
         this.numberOfVariables = 0;
@@ -52,17 +55,33 @@ public class InputParser {
 
     private Clause transformToClause(String[] brokenVariables) {
         ArrayList<Variable> tempClause = new ArrayList<Variable>();
+        TreeMap<Integer, Integer> count = new TreeMap<Integer, Integer>();
+        int newVariableIdentifier = 0;
         for(String s : brokenVariables){
             if(!s.equals("0")){
                 int variableIdentifier = Integer.parseInt(s);
+                if(variableIdentifier < 0) {
+                    newVariableIdentifier = variableIdentifier*(-1);
+                }
+                else {
+                    newVariableIdentifier = variableIdentifier;
+                }
+                if (count.get(newVariableIdentifier) == null) {
+                    count.put(newVariableIdentifier, 0);
+                }
+                int value = count.get(newVariableIdentifier);
+                count.put(newVariableIdentifier, value+1);
                 Variable variable;
-                variable =new  Variable(variableIdentifier, true);
+                variable = new  Variable(variableIdentifier, true);
                 tempClause.add(variable);
             }
-
         }
-        return new Clause(tempClause);
 
+        Map<Integer, Integer> newMap = new TreeMap<>(Collections.reverseOrder());
+        newMap.putAll(count);
+        //Comparator c = Collections.reverseOrder();
+        //Collections.sort(count,c);
+        return new Clause(tempClause);
     }
 
     @Override

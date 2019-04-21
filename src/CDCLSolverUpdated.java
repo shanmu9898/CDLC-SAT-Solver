@@ -122,13 +122,63 @@ public class CDCLSolverUpdated {
     }
 
     private int backtrackUIP(Integer key, Clause value) {
-        Variable variable = null;
-        for(Variable temp : value.getOrVariables()) {
-            Variable v = temp.modVariableName();
-            if(decisionLevelAssigned.get(v.getVariableName()) == currentDecisionLevel) {
-                variable = temp;
-            }
-        }
+////        Variable variable = null;
+////        for(Variable temp : value.getOrVariables()) {
+////            Variable v = temp.modVariableName();
+////            if(decisionLevelAssigned.get(v.getVariableName()) == currentDecisionLevel) {
+////                variable = temp;
+////            }
+////        }
+//
+//        for(Variable v : variableArrayListClone) {
+//            if(decisionLevelAssigned.get(v.getVariableName()) > key) {
+//                valuesAlreadyAssigned.remove(v);
+//                if(lastDecidedVariables.contains(v)) {
+//                    lastDecidedVariables.remove(v);
+//                }
+//                variablesAssignment.put(v.getVariableName(),0);
+//                decisionLevelAssigned.put(v.getVariableName(),-1);
+//                numberOfVariablesAssigned--;
+//                UIPtrack.put(v.getVariableName(),null);
+//                for(int i = 1; i < totalNumberOfVariables; i++) {
+//                    implicationGraph[i][v.getVariableName()] = 0;
+//                }
+//                System.out.println("Variable " + v + " has been removed");
+//            } else if (decisionLevelAssigned.get(v.getVariableName()) == key && (lastDecidedVariables.contains(v) || value.getOrVariables().contains(v))){
+//                valuesAlreadyAssigned.remove(v);
+//                decisionLevelAssigned.put(v.getVariableName(), -1);
+//                variablesAssignment.put(v.getVariableName(), 0);
+//                if(lastDecidedVariables.contains(v)) {
+//                    lastDecidedVariables.remove(v);
+//                }
+//                numberOfVariablesAssigned--;
+//                for(int i = 1; i < totalNumberOfVariables; i++) {
+//                    implicationGraph[i][v.getVariableName()] = 0;
+//                }
+//                UIPtrack.put(v.getVariableName(),null);
+//                System.out.println("Variable " + v + " has been removed");
+//
+//            }
+//
+
+
+//        if(variable.getVariableName() < 0){
+//            if(variable.getVariableValue()) {
+//                variable.setVariableValue(false);
+//            }else {
+//                variable.setVariableValue(true);
+//            }
+//        }
+//        variable = variable.modVariableName();
+//        System.out.println("Variable " + variable + " has been added from conflict level" +  currentDecisionLevel);
+//
+//        if(!valuesAlreadyAssigned.contains(variable)) {
+//            valuesAlreadyAssigned.add(variable.modVariableName());
+//            decisionLevelAssigned.put(variable.modVariableName().getVariableName(), key);
+//            variablesAssignment.put(variable.modVariableName().getVariableName(),1);
+//            numberOfVariablesAssigned++;
+//            UIPtrack.put(variable.modVariableName().getVariableName() , value);
+//        }
         ArrayList<Variable> variableArrayListClone = (ArrayList<Variable>) valuesAlreadyAssigned.clone();
         for(Variable v : variableArrayListClone) {
             if(decisionLevelAssigned.get(v.getVariableName()) > key) {
@@ -136,46 +186,16 @@ public class CDCLSolverUpdated {
                 if(lastDecidedVariables.contains(v)) {
                     lastDecidedVariables.remove(v);
                 }
-                variablesAssignment.put(v.getVariableName(),0);
-                decisionLevelAssigned.put(v.getVariableName(),-1);
-                numberOfVariablesAssigned--;
-                UIPtrack.put(v.getVariableName(),null);
-                for(int i = 1; i < totalNumberOfVariables; i++) {
-                    implicationGraph[i][v.getVariableName()] = 0;
-                }
-                System.out.println("Variable " + v + " has been removed");
-            } else if (decisionLevelAssigned.get(v.getVariableName()) == key && lastDecidedVariables.contains(v)){
-                valuesAlreadyAssigned.remove(v);
                 decisionLevelAssigned.put(v.getVariableName(), -1);
                 variablesAssignment.put(v.getVariableName(), 0);
-                lastDecidedVariables.remove(v);
                 numberOfVariablesAssigned--;
                 for(int i = 1; i < totalNumberOfVariables; i++) {
                     implicationGraph[i][v.getVariableName()] = 0;
                 }
-                UIPtrack.put(v.getVariableName(),null);
-                System.out.println("Variable " + v + " has been removed");
-
             }
 
+        }
 
-        }
-        if(variable.getVariableName() < 0){
-            if(variable.getVariableValue()) {
-                variable.setVariableValue(false);
-            }else {
-                variable.setVariableValue(true);
-            }
-        }
-        variable = variable.modVariableName();
-        System.out.println("Variable " + variable + " has been added from conflict level" +  currentDecisionLevel);
-        if(!valuesAlreadyAssigned.contains(variable)) {
-            valuesAlreadyAssigned.add(variable.modVariableName());
-            decisionLevelAssigned.put(variable.modVariableName().getVariableName(), key);
-            variablesAssignment.put(variable.modVariableName().getVariableName(),1);
-            numberOfVariablesAssigned++;
-            UIPtrack.put(variable.modVariableName().getVariableName() , null);
-        }
         return key;
 
     }
@@ -265,6 +285,12 @@ public class CDCLSolverUpdated {
         if(c == null) {
             return -1;
         }
+        if(c.orVariables.size() == 1) {
+            int decisionLevel = decisionLevelAssigned.get(c.getOrVariables().get(0).modVariableName().getVariableName());
+            return decisionLevel;
+
+
+        }
         for(Variable temp : cClone) {
             Variable v = temp.modVariableName();
             if(decisionLevelAssigned.get(v.getVariableName()) == currentDecisionLevel) {
@@ -291,7 +317,7 @@ public class CDCLSolverUpdated {
         System.out.println("Trying to learn");
         Clause conflictingClause = findConflictingClause(value);
         System.out.println("soConflictClause is  " + conflictingClause);
-        if(conflictingClause == null) {
+        if(conflictingClause == null || conflictingClause.getOrVariables().size() == 0) {
             return null;
         }
         Variable lastGuessedVariablethroughUnitProp = getLastGuessedVariableInC(conflictingClause);
@@ -316,7 +342,7 @@ public class CDCLSolverUpdated {
     private Clause resolve(Clause conflictingClause, Clause antecedant) {
         System.out.println("So we are resolving " + conflictingClause + " antecedant " +  antecedant);
 
-        if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause)) {
+        if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause) || conflictingClause.getOrVariables().size() == 0) {
             return conflictingClause;
         } else {
             Clause intermediateClause = applyResolution(conflictingClause, antecedant);
@@ -481,6 +507,7 @@ public class CDCLSolverUpdated {
             }
 
             Clause newClauseLearnt = new Clause(clauseToLearn);
+            System.out.println("Clause being added to formula is " +newClauseLearnt);
             formula.add(0,newClauseLearnt);
             totalNumberOfClauses++;
             return variablesToLearn;
@@ -518,6 +545,7 @@ public class CDCLSolverUpdated {
     }
 
     private Pair<Integer, Variable> unitpropogation() {
+        System.out.println("size of valuesAlreadyAssigned " + valuesAlreadyAssigned.size());
         int unitPropDone = 0;
         while (unitPropDone == 0) {
             for(Clause c : formula) {
@@ -536,6 +564,7 @@ public class CDCLSolverUpdated {
                         }
                     }
                 } else if (unassignedVariableCount.getKey() == 0) {
+
                     if(!calculateTruthOfClause(c.getOrVariables())) {
                         System.out.println("Clause is 2 " + c);
                         return new Pair<Integer, Variable>(-1, unassignedVariableCount.getValue());

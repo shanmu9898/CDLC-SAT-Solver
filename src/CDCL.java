@@ -1,6 +1,8 @@
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.Instant;
+import java.time.Duration;
 
 public class CDCL {
     public static void main(String[] args) throws FileNotFoundException{
@@ -14,9 +16,23 @@ public class CDCL {
         // Conflict Analysis has two choices      :-  Chaff, 1UIP
         // Solver below can be used to change the parameters and run accordingly
 
-        String solution = cdclSolver.solution("Random", "Chaff");
-        System.out.println(solution);
+        //String solution = cdclSolver.solution("Random", "Chaff");
+        //System.out.println(solution);
+        long elapesedTimeTotal = 0;
 
+        for(int k = 0; k < 10; k++) {
+            Instant start = Instant.now();
+            System.out.println("Iteration : " + k);
+            //String solution = cdclSolver.solution();
+            String solution = cdclSolver.solution("Random", "Chaff");
+            Instant finish = Instant.now();
+            System.out.println(solution);
+            long elapesedTime = Duration.between(start, finish).toNanos();
+            //System.out.println("Time taken is " + elapesedTime);
+            elapesedTimeTotal += elapesedTime;
+
+        }
+        System.out.println("Total Average time is  " + (elapesedTimeTotal/10));
 
     }
 

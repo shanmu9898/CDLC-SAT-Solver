@@ -1,5 +1,6 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +33,7 @@ public class CDCLSolverUpdated {
     int number = 0;
     ArrayList<Variable> tempUnitPropVariables;
     HashMap<Integer, Clause> UIPtrack;
+    int[] clause2;
 
     public CDCLSolverUpdated(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
@@ -46,6 +48,7 @@ public class CDCLSolverUpdated {
         this.implicationGraph = new int[totalNumberOfVariables + 1][totalNumberOfVariables + 1];
         this.tempUnitPropVariables = new ArrayList<Variable>();
         this.UIPtrack = new HashMap<Integer, Clause>();
+        this.clause2 = new int[totalNumberOfVariables + 1];
 
 
     }
@@ -83,8 +86,10 @@ public class CDCLSolverUpdated {
 
         while(numberOfVariablesAssigned != totalNumberOfVariables) {
             if(backtracked == 0) {
-                guessABranchingVariable(formula);
+                //guessABranchingVariable(formula);
                 //chooseABranchingVariable(test);
+                //guess2CBranchingVariable(formula);
+                guessAllCBranchingVariable(formula);
             }
 
 
@@ -771,6 +776,81 @@ public class CDCLSolverUpdated {
             return false;
         }
     }
+
+    private void guess2CBranchingVariable(ArrayList<Clause> formula) {
+        for(Clause c : formula) {
+            if(c.getOrVariables().size() == 2) {
+                for(Variable temp: c.getOrVariables()) {
+                    Variable v = temp.modVariableName();
+                    if(decisionLevelAssigned.get(v.getVariableName()) == -1 && !valuesAlreadyAssigned.contains(v)) {
+                        clause2[v.getVariableName()] = clause2[v.getVariableName()] + 1;
+                    }
+                }
+            }
+        }
+
+        ArrayList<Integer> numbers = new ArrayList<>();
+        int max = 0;
+        for(int i = 0 ; i < totalNumberOfVariables + 1; i++) {
+            if(clause2[i] > max) {
+                max = clause2[i];
+            }
+        }
+        for(int i = 1 ; i < totalNumberOfVariables + 1; i++) {
+            if(clause2[i] == max && !valuesAlreadyAssigned.contains(new Variable(i, false))) {
+                numbers.add(i);
+            }
+        }
+        Random randomClauseGenerator = new Random();
+        int index = randomClauseGenerator.nextInt(numbers.size());
+        Variable v = new Variable(numbers.get(index), false);
+        decisionLevelAssigned.put(v.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(v);
+        variablesAssignment.put(v.getVariableName(), 1);
+        lastDecidedVariables.add(v);
+        numberOfVariablesAssigned++;
+        Arrays.fill(clause2, 0);
+       // System.out.println("Variable is guessed " + v);
+
+    }
+
+    private void guessAllCBranchingVariable(ArrayList<Clause> formula) {
+        for(Clause c : formula) {
+
+                for(Variable temp: c.getOrVariables()) {
+                    Variable v = temp.modVariableName();
+                    if(decisionLevelAssigned.get(v.getVariableName()) == -1 && !valuesAlreadyAssigned.contains(v)) {
+                        clause2[v.getVariableName()] = clause2[v.getVariableName()] + 1;
+                    }
+                }
+
+        }
+
+        ArrayList<Integer> numbers = new ArrayList<>();
+        int max = 0;
+        for(int i = 0 ; i < totalNumberOfVariables + 1; i++) {
+            if(clause2[i] > max) {
+                max = clause2[i];
+            }
+        }
+        for(int i = 1 ; i < totalNumberOfVariables + 1; i++) {
+            if(clause2[i] == max && !valuesAlreadyAssigned.contains(new Variable(i, false))) {
+                numbers.add(i);
+            }
+        }
+        Random randomClauseGenerator = new Random();
+        int index = randomClauseGenerator.nextInt(numbers.size());
+        Variable v = new Variable(numbers.get(index), false);
+        decisionLevelAssigned.put(v.getVariableName(), currentDecisionLevel);
+        valuesAlreadyAssigned.add(v);
+        variablesAssignment.put(v.getVariableName(), 1);
+        lastDecidedVariables.add(v);
+        numberOfVariablesAssigned++;
+        Arrays.fill(clause2, 0);
+        // System.out.println("Variable is guessed " + v);
+
+    }
+
 
     private void guessABranchingVariable(ArrayList<Clause> formula ) {
         Random randomClauseGenerator = new Random();

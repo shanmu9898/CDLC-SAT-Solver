@@ -15,11 +15,12 @@ public class InputParser {
     ArrayList<Clause> formula;
 
     public InputParser() {
-        this.numberOfVariables = 0;
-        this.numberOfClauses = 0;
-        this.formula = new ArrayList<Clause>();
+        this.numberOfVariables = 0;                  // Got from the parser
+        this.numberOfClauses = 0;                    // Got from the parser
+        this.formula = new ArrayList<Clause>();      // Made after parsing the dimacs file
     }
 
+    // Function to parse based on file name
     public ArrayList<Clause> parse(String filename){
         BufferedReader reader;
         try {
@@ -50,6 +51,8 @@ public class InputParser {
 
     }
 
+
+    // Function to transform a string array into a clause
     private Clause transformToClause(String[] brokenVariables) {
         ArrayList<Variable> tempClause = new ArrayList<Variable>();
         for(String s : brokenVariables){
@@ -65,6 +68,7 @@ public class InputParser {
 
     }
 
+    // Function to print clauses
     @Override
     public String toString() {
         return "InputParser{" +

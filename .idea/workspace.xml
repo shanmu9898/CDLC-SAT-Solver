@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e6465e42-591a-48fa-af87-01ba83389f2b" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/CDCL.java" afterPath="$PROJECT_DIR$/src/CDCL.java" />
       <change beforePath="$PROJECT_DIR$/src/CDCLSolverUpdated.java" afterPath="$PROJECT_DIR$/src/CDCLSolverUpdated.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -22,16 +23,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CDCLSolverUpdated.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CDCL.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/CDCL.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="165">
+              <caret line="11" column="62" lean-forward="false" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CDCLSolverUpdated.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/CDCLSolverUpdated.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="91" column="44" lean-forward="false" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+            <state relative-caret-position="51">
+              <caret line="75" column="59" lean-forward="true" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
               <folding>
-                <element signature="e#23465#23475#0" expanded="true" />
-                <element signature="e#24090#24100#0" expanded="true" />
-                <element signature="e#25863#25873#0" expanded="true" />
-                <element signature="e#26503#26513#0" expanded="true" />
+                <element signature="e#17933#17943#0" expanded="true" />
+                <element signature="e#18558#18568#0" expanded="true" />
+                <element signature="e#20331#20341#0" expanded="true" />
+                <element signature="e#20971#20981#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CDCLSolver.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/CDCLSolver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#15860#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -72,26 +97,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="135">
               <caret line="9" column="3" lean-forward="true" selection-start-line="9" selection-start-column="3" selection-end-line="9" selection-end-column="3" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TestUIP.cnf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cnf_test/TestUIP.cnf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="7" lean-forward="false" selection-start-line="6" selection-start-column="7" selection-end-line="6" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="simple2.cnf" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/cnf_test/simple2.cnf">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="2" column="9" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="9" />
               <folding />
             </state>
           </provider>
@@ -215,7 +220,6 @@
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-01.cnf" />
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-91/uf20-02.cnf" />
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-91/uf20-03.cnf" />
-        <option value="$PROJECT_DIR$/src/CDCL.java" />
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-91/uf20-05.cnf" />
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-91/uf20-04.cnf" />
         <option value="$PROJECT_DIR$/src/cnf_test/uf20-91/uf20-07.cnf" />
@@ -234,6 +238,7 @@
         <option value="$PROJECT_DIR$/src/cnf_test/wikipedia.cnf" />
         <option value="$PROJECT_DIR$/src/cnf_test/50Sat.txt" />
         <option value="$PROJECT_DIR$/src/CDCLSolverUpdated.java" />
+        <option value="$PROJECT_DIR$/src/CDCL.java" />
       </list>
     </option>
   </component>
@@ -286,12 +291,6 @@
               <item name="CDLC-SAT-Solver" type="b2602c69:ProjectViewProjectNode" />
               <item name="CDLC-SAT-Solver" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="CDLC-SAT-Solver" type="b2602c69:ProjectViewProjectNode" />
-              <item name="CDLC-SAT-Solver" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="cnf_test" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -573,15 +572,16 @@
       <workItem from="1555132932705" duration="5915000" />
       <workItem from="1555225526221" duration="11610000" />
       <workItem from="1555444712918" duration="18439000" />
-      <workItem from="1555826912561" duration="38471000" />
+      <workItem from="1555826912561" duration="41511000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="192175000" />
+    <option name="totallyTimeSpent" value="195215000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="726" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39699864" sideWeight="0.32761088" order="7" side_tool="true" content_ui="tabs" />
@@ -599,7 +599,7 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3977813" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3977813" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="CheckStyle" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32646593" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -670,19 +670,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/CDCLSolverUpdated.java</url>
-          <line>535</line>
+          <line>423</line>
           <properties />
           <option name="timeStamp" value="38" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/CDCLSolverUpdated.java</url>
-          <line>630</line>
-          <properties />
-          <option name="timeStamp" value="41" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" type="java-method">
           <url>file://$PROJECT_DIR$/src/CDCLSolverUpdated.java</url>
-          <line>544</line>
+          <line>432</line>
           <properties class="CDCLSolverUpdated" method="conflictLearn">
             <option name="EMULATED" value="true" />
           </properties>
@@ -701,13 +695,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_131.jdk/Contents/Home/src.zip!/java/io/FileInputStream.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="129">
-          <caret line="137" column="0" lean-forward="false" selection-start-line="137" selection-start-column="0" selection-end-line="137" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cnf_test/4random.cnf" />
     <entry file="file://$PROJECT_DIR$/src/cnf_test/20random.cnf" />
     <entry file="file://$PROJECT_DIR$/src/cnf_test/3random.cnf" />
@@ -916,16 +903,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/CDCL.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/cnf_test/php3.cnf">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="750">
@@ -1024,15 +1001,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/CDCLSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#15860#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/CDCLSolverUpdated.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="91" column="44" lean-forward="false" selection-start-line="91" selection-start-column="44" selection-end-line="91" selection-end-column="44" />
+        <state relative-caret-position="51">
+          <caret line="75" column="59" lean-forward="true" selection-start-line="75" selection-start-column="59" selection-end-line="75" selection-end-column="59" />
           <folding>
-            <element signature="e#23465#23475#0" expanded="true" />
-            <element signature="e#24090#24100#0" expanded="true" />
-            <element signature="e#25863#25873#0" expanded="true" />
-            <element signature="e#26503#26513#0" expanded="true" />
+            <element signature="e#17933#17943#0" expanded="true" />
+            <element signature="e#18558#18568#0" expanded="true" />
+            <element signature="e#20331#20341#0" expanded="true" />
+            <element signature="e#20971#20981#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/CDCL.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="165">
+          <caret line="11" column="62" lean-forward="false" selection-start-line="11" selection-start-column="62" selection-end-line="11" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

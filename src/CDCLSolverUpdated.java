@@ -84,7 +84,7 @@ public class CDCLSolverUpdated {
             Pair<Integer, Variable> unitPropValue = unitpropogation();
             backtracked = 0;
             if(unitPropValue.getKey() == -1) {
-                if (conflictAnalysisHeuristics.equals("Chaff")) {
+                if (conflictAnalysisHeuristics.equals("GRASP")) {
                     Pair<Integer, ArrayList<Variable>> decisionLevelToBackTrack = conflictAnalysis(formula, valuesAlreadyAssigned, implicationGraph, unitPropValue.getValue(), variablesAssignment);
                     if (decisionLevelToBackTrack.getKey() < 0) {
                         return "UNSAT";

@@ -13,18 +13,18 @@ public class CDCL {
         CDCLSolverUpdated cdclSolver = new CDCLSolverUpdated(parser.numberOfClauses, parser.numberOfVariables, formula);  //CDCL solver
 
         // Branching heuristics has three choices :-  Random, 2C, AllC
-        // Conflict Analysis has two choices      :-  Chaff, 1UIP
+        // Conflict Analysis has two choices      :-  GRASP, 1UIP
         // Solver below can be used to change the parameters and run accordingly
 
-        //String solution = cdclSolver.solution("Random", "Chaff");
+        //String solution = cdclSolver.solution("Random", "GRASP");
         //System.out.println(solution);
         long elapesedTimeTotal = 0;
 
-        for(int k = 0; k < 10; k++) {
+        for(int k = 0; k < 1; k++) {
             Instant start = Instant.now();
             System.out.println("Iteration : " + k);
             //String solution = cdclSolver.solution();
-            String solution = cdclSolver.solution("Random", "Chaff");
+            String solution = cdclSolver.solution("Random", "GRASP");
             Instant finish = Instant.now();
             System.out.println(solution);
             long elapesedTime = Duration.between(start, finish).toNanos();
@@ -32,8 +32,7 @@ public class CDCL {
             elapesedTimeTotal += elapesedTime;
 
         }
-        System.out.println("Total Average time is  " + (elapesedTimeTotal/10));
+        System.out.println("Total Average time is  " + (elapesedTimeTotal/1));
 
     }
-
 }

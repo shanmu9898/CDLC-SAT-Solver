@@ -58,6 +58,14 @@ public class Clause {
         orVariables = nonDuplicateArray;
     }
 
+    public Clause negateClause() {
+        ArrayList<Variable> orVariablesNeg = new ArrayList<>();
+        for(Variable v : orVariables){
+            orVariablesNeg.add(new Variable((v.getVariableName()*-1),v.variableValue));
+        }
+        Clause cdash = new Clause(orVariablesNeg);
+        return cdash;
+    }
 
 
     @Override
@@ -65,7 +73,19 @@ public class Clause {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Clause clauseTesting = (Clause) o;
-        return clauseTesting.getOrVariables().equals(getOrVariables());
+        int number = 0;
+        for(Variable v : orVariables) {
+            for(Variable vdash : clauseTesting.getOrVariables()) {
+                if(v.getVariableName() == vdash.getVariableName()) {
+                    number++;
+                }
+            }
+        }
+        if(number == orVariables.size() && number == clauseTesting.getOrVariables().size()) {
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

@@ -1,3 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +42,8 @@ public class CDCLSolverUpdated {
     private ArrayList<Variable> tempUnitPropVariables;               // Tracker to keep track of the Variables which have been assigned solely by unit propogation.
     private HashMap<Integer, Clause> UIPtrack;                       // Keeps track of the antecedants of a variable.
     private int[] clause2;                                           // Used for branching heuristics
-
+    int numberVariables = 0;
+    ArrayList<Clause> unsatProof;
 
     // Constructor
     public CDCLSolverUpdated(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
@@ -53,15 +60,17 @@ public class CDCLSolverUpdated {
         this.tempUnitPropVariables = new ArrayList<Variable>();
         this.UIPtrack = new HashMap<Integer, Clause>();
         this.clause2 = new int[totalNumberOfVariables + 1];
+        this.unsatProof = new ArrayList<>();
 
 
     }
 
     // Actual algorithm of CDCL. Calls the necessary helper functions
-    public String solution(String branchingHeursitics, String conflictAnalysisHeuristics) {
+    public String solution(String branchingHeursitics, String conflictAnalysisHeuristics, boolean proofNeeded) throws IOException {
         initialSetUp(formula); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
 
         if(unitpropogation().getKey() == -1) {
+            System.out.println("size is " + unsatProof.size());
             return "UNSAT";
         }
 
@@ -102,6 +111,10 @@ public class CDCLSolverUpdated {
                 } else if (conflictAnalysisHeuristics.equals("1UIP")) {
                     Pair<Integer, Clause> decisionLevelToBackTrack = conflictAnalysisUIP(formula, valuesAlreadyAssigned, implicationGraph, unitPropValue.getValue(), variablesAssignment);
                     if (decisionLevelToBackTrack.getKey() < 0) {
+                        if(proofNeeded) {
+                            processResolution(unsatProof);
+
+                        }
                         return "UNSAT";
                     } else {
                         int backtrackingLevel = backtrackUIP(decisionLevelToBackTrack.getKey(), decisionLevelToBackTrack.getValue());
@@ -110,6 +123,9 @@ public class CDCLSolverUpdated {
                             backtracked = 1;
                             currentDecisionLevel = backtrackingLevel;
                         } else {
+                            if(proofNeeded) {
+                                processResolution(unsatProof);
+                            }
                             return "UNSAT";
                         }
 
@@ -123,6 +139,59 @@ public class CDCLSolverUpdated {
         printArrayList(valuesAlreadyAssigned);
         return "SAT";
 
+    }
+
+    private void processResolution(ArrayList<Clause> unsatProof) throws IOException {
+        unsatProof.remove((unsatProof.size() - 1));
+        unsatProof.remove((unsatProof.size() - 1));
+        unsatProof.remove((unsatProof.size() - 1));
+        ArrayList<Clause> unsatProofUnique = new ArrayList<>();
+        for(Clause c : unsatProof) {
+            if(!unsatProofUnique.contains(c)) {
+                unsatProofUnique.add(c);
+            }
+        }
+        ArrayList<Clause> unsatProofUniqueClone = (ArrayList<Clause>) unsatProofUnique.clone();
+        for(Clause c : unsatProofUniqueClone) {
+            if(c.getOrVariables().size() == 0) {
+                unsatProofUnique.remove(c);
+            }
+        }
+        for(Clause c : unsatProofUnique) {
+            Clause cdash = c.negateClause();
+            if(unsatProofUnique.contains(cdash) && cdash.orVariables.size() != 0){
+                unsatProof.add(c);
+                unsatProof.add(cdash);
+                unsatProof.add(new Clause(new ArrayList<>()));
+            }
+
+        }
+
+
+
+        File fout = new File("resolutionProof.txt");
+        FileOutputStream fos = new FileOutputStream(fout);
+
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+
+        bw.write("v " + unsatProofUnique.size());
+        bw.newLine();
+        for (int i = 0; i < unsatProofUnique.size(); i++) {
+            bw.write(unsatProofUnique.get(i).toString());
+            bw.newLine();
+        }
+        for(int i = 0; i <= unsatProof.size() - 3; i+=3) {
+            for(int j = i ; j < i + 3; j++) {
+               if(unsatProof.get(j).getOrVariables().size() == 0) {
+                   bw.write("-1 ");
+               } else {
+                   bw.write((unsatProofUnique.indexOf(unsatProof.get(j)) + 1) + " ");
+               }
+            }
+            bw.newLine();
+
+        }
+        bw.close();
     }
 
 
@@ -238,7 +307,9 @@ public class CDCLSolverUpdated {
     // Analysing and adding clauses with 1st UIP
     private Pair<Integer, Clause> conflictAnalysisUIP(ArrayList<Clause> formula, ArrayList<Variable> valuesAlreadyAssigned, int[][] implicationGraph, Variable value, HashMap<Integer, Integer> variablesAssignment) {
         Clause c = conflictLearnUIP(implicationGraph, valuesAlreadyAssigned, formula, value, variablesAssignment);
+
         if(c == null || c.getOrVariables().size() == 0) {
+            System.out.println("now its null or its size is zero and hence its done");
             return new Pair<>(-1, c);
         }
         int decisionLevelToBackTrackUIP = getDecisionLevelTobackTrack(c);
@@ -297,22 +368,60 @@ public class CDCLSolverUpdated {
         if(finalClauseToAdd.getOrVariables().size() != 0) {
             formula.add(0, finalClauseToAdd);
             totalNumberOfClauses++;
-        }
+        } else {
 
+        }
         return finalClauseToAdd;
     }
 
     // Function to do resolution
     private Clause resolve(Clause conflictingClause, Clause antecedant) {
-        if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause) || conflictingClause.getOrVariables().size() == 0) {
-            return conflictingClause;
+        if(antecedant != null) {
+            System.out.println("Resolving");
+            System.out.println(conflictingClause);
+            System.out.println(antecedant);
+            Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
+            Clause antecedantClauseClone = new Clause((ArrayList<Variable>) antecedant.getOrVariables().clone());
+            unsatProof.add(conflictingClauseClone);
+            unsatProof.add(antecedantClauseClone);
+
         } else {
+            System.out.println("Resolving");
+            System.out.println(conflictingClause);
+            System.out.println("empty clause");
+            Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
+            Clause antecedantClauseClone = new Clause(new ArrayList<>());
+            unsatProof.add(conflictingClauseClone);
+            unsatProof.add(antecedantClauseClone);
+
+        }
+        if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause)) {
+            System.out.println("To give");
+            System.out.println(conflictingClause);
+            Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
+            unsatProof.add(conflictingClauseClone);
+            return conflictingClause;
+        } else if (conflictingClause.getOrVariables().size() == 0) {
+            System.out.println("To give");
+            Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
+            System.out.println(conflictingClause);
+            unsatProof.add(conflictingClauseClone);
+            return conflictingClause;
+        }else {
+
             Clause intermediateClause = applyResolution(conflictingClause, antecedant);
             intermediateClause.removeDuplicates();
+            System.out.println("To give");
+            System.out.println(intermediateClause);
+            Clause intermediateClauseClone = new Clause((ArrayList<Variable>) intermediateClause.getOrVariables().clone());
+            unsatProof.add(intermediateClauseClone);
             Variable lastGuessedVariable = getLastGuessedVariableInC(intermediateClause);
-            Clause resolvedClause = resolve(intermediateClause, antecedant(lastGuessedVariable));
+            Clause antecedantProof = antecedant(lastGuessedVariable);
+            Clause resolvedClause = resolve(intermediateClause, antecedantProof);
             return resolvedClause;
         }
+
+
     }
 
     // Check for terminating condition in the case of 1st UIP [Checks if only one variable is from the current decision level of conflict]
@@ -651,6 +760,7 @@ public class CDCLSolverUpdated {
 
     // 2 Clause heuristic function
     private void guess2CBranchingVariable(ArrayList<Clause> formula) {
+        numberVariables++;
         for(Clause c : formula) {
             if(c.getOrVariables().size() == 2) {
                 for(Variable temp: c.getOrVariables()) {
@@ -689,6 +799,7 @@ public class CDCLSolverUpdated {
 
     // All Clause heuristic function
     private void guessAllCBranchingVariable(ArrayList<Clause> formula) {
+        numberVariables++;
         for(Clause c : formula) {
 
                 for(Variable temp: c.getOrVariables()) {
@@ -730,6 +841,7 @@ public class CDCLSolverUpdated {
         int index = randomClauseGenerator.nextInt(formula.size());
         Clause c = formula.get(index);
         int value = pickRandomVariable(c);
+        numberVariables++;
         while (value == 0) {
             index = randomClauseGenerator.nextInt(formula.size());
             c = formula.get(index);
@@ -740,6 +852,7 @@ public class CDCLSolverUpdated {
 
     // Helper function to chose a variable from a clause randomly
     private int pickRandomVariable(Clause c) {
+
         c.getOrVariables();
         Random randomVariableGenerator = new Random();
         int index = randomVariableGenerator.nextInt(c.getOrVariables().size());

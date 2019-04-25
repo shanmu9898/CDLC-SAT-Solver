@@ -93,7 +93,7 @@ public class CDCLSolverUpdated {
             Pair<Integer, Variable> unitPropValue = unitpropogation();
             backtracked = 0;
             if(unitPropValue.getKey() == -1) {
-                if (conflictAnalysisHeuristics.equals("Chaff")) {
+                if (conflictAnalysisHeuristics.equals("GRASP")) {
                     Pair<Integer, ArrayList<Variable>> decisionLevelToBackTrack = conflictAnalysis(formula, valuesAlreadyAssigned, implicationGraph, unitPropValue.getValue(), variablesAssignment);
                     if (decisionLevelToBackTrack.getKey() < 0) {
                         return "UNSAT";
@@ -309,7 +309,6 @@ public class CDCLSolverUpdated {
         Clause c = conflictLearnUIP(implicationGraph, valuesAlreadyAssigned, formula, value, variablesAssignment);
 
         if(c == null || c.getOrVariables().size() == 0) {
-            System.out.println("now its null or its size is zero and hence its done");
             return new Pair<>(-1, c);
         }
         int decisionLevelToBackTrackUIP = getDecisionLevelTobackTrack(c);
@@ -377,18 +376,18 @@ public class CDCLSolverUpdated {
     // Function to do resolution
     private Clause resolve(Clause conflictingClause, Clause antecedant) {
         if(antecedant != null) {
-            System.out.println("Resolving");
-            System.out.println(conflictingClause);
-            System.out.println(antecedant);
+//            System.out.println("Resolving");
+//            System.out.println(conflictingClause);
+//            System.out.println(antecedant);
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             Clause antecedantClauseClone = new Clause((ArrayList<Variable>) antecedant.getOrVariables().clone());
             unsatProof.add(conflictingClauseClone);
             unsatProof.add(antecedantClauseClone);
 
         } else {
-            System.out.println("Resolving");
-            System.out.println(conflictingClause);
-            System.out.println("empty clause");
+//            System.out.println("Resolving");
+//            System.out.println(conflictingClause);
+//            System.out.println("empty clause");
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             Clause antecedantClauseClone = new Clause(new ArrayList<>());
             unsatProof.add(conflictingClauseClone);
@@ -396,23 +395,23 @@ public class CDCLSolverUpdated {
 
         }
         if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause)) {
-            System.out.println("To give");
-            System.out.println(conflictingClause);
+//            System.out.println("To give");
+//            System.out.println(conflictingClause);
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             unsatProof.add(conflictingClauseClone);
             return conflictingClause;
         } else if (conflictingClause.getOrVariables().size() == 0) {
-            System.out.println("To give");
+//            System.out.println("To give");
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
-            System.out.println(conflictingClause);
+//            System.out.println(conflictingClause);
             unsatProof.add(conflictingClauseClone);
             return conflictingClause;
         }else {
 
             Clause intermediateClause = applyResolution(conflictingClause, antecedant);
             intermediateClause.removeDuplicates();
-            System.out.println("To give");
-            System.out.println(intermediateClause);
+//            System.out.println("To give");
+//            System.out.println(intermediateClause);
             Clause intermediateClauseClone = new Clause((ArrayList<Variable>) intermediateClause.getOrVariables().clone());
             unsatProof.add(intermediateClauseClone);
             Variable lastGuessedVariable = getLastGuessedVariableInC(intermediateClause);

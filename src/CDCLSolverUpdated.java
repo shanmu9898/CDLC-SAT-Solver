@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -44,12 +45,14 @@ public class CDCLSolverUpdated {
     private int[] clause2;                                           // Used for branching heuristics
     int numberVariables = 0;
     ArrayList<Clause> unsatProof;
+    HashMap<Integer, Integer> variableToCodeMapping;
 
     // Constructor
     public CDCLSolverUpdated(int totalNumberOfClauses, int totalNumberOfVariables, ArrayList<Clause> formula) {
         this.totalNumberOfClauses = totalNumberOfClauses;
         this.totalNumberOfVariables = totalNumberOfVariables;
-        this.formula = formula;
+        this.variableToCodeMapping = new HashMap<>();
+        this.formula = convertRawFormula(formula);
         this.numberOfVariablesAssigned = 0;
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
@@ -65,9 +68,40 @@ public class CDCLSolverUpdated {
 
     }
 
+    public ArrayList<Clause> convertRawFormula(ArrayList<Clause> fomula) {
+        int i = 1;
+        for(Clause c : fomula) {
+            for(Variable v : c.getOrVariables()){
+                Variable vdash = v.modVariableName();
+                if(!variableToCodeMapping.containsKey(vdash.getVariableName())) {
+                    variableToCodeMapping.put(vdash.getVariableName(), i);
+                    i++;
+                }
+            }
+        }
+
+        ArrayList<Clause> formulaUpdated = new ArrayList<>();
+        for(Clause c : fomula) {
+            ArrayList<Variable> clauseUpdated = new ArrayList<>();
+            for(Variable v : c.getOrVariables()) {
+                Variable vdash = v.modVariableName();
+                if(v.getVariableName() < 0) {
+                    clauseUpdated.add(new Variable((variableToCodeMapping.get(vdash.getVariableName()) * -1), v.variableValue));
+                } else {
+                    clauseUpdated.add(new Variable(variableToCodeMapping.get(vdash.getVariableName()), v.variableValue));
+                }
+            }
+            Clause newClause = new Clause(clauseUpdated);
+            formulaUpdated.add(newClause);
+        }
+        return formulaUpdated;
+    }
+
     // Actual algorithm of CDCL. Calls the necessary helper functions
     public String solution(String branchingHeursitics, String conflictAnalysisHeuristics, boolean proofNeeded) throws IOException {
         initialSetUp(formula); // This is to input all the variables into the decisionLevelAssigned HashMap with variable , -1 value;
+
+
 
         if(unitpropogation().getKey() == -1) {
             System.out.println("size is " + unsatProof.size());
@@ -136,7 +170,7 @@ public class CDCLSolverUpdated {
                 currentDecisionLevel++;
             }
         }
-        printArrayList(valuesAlreadyAssigned);
+        printArrayListAnswers(valuesAlreadyAssigned);
         return "SAT";
 
     }
@@ -295,11 +329,17 @@ public class CDCLSolverUpdated {
     }
 
     //Helper to print the answers
-    private void printArrayList(ArrayList<Variable> valuesAlreadyAssigned) {
+    private void printArrayListAnswers(ArrayList<Variable> valuesAlreadyAssigned) {
 
         System.out.println("Final Values are");
         for(Variable v : valuesAlreadyAssigned) {
-            System.out.println(v);
+            for(Map.Entry<Integer,Integer> k : variableToCodeMapping.entrySet()){
+                if(k.getValue().equals(v.getVariableName())) {
+                    Variable vdash = new Variable(k.getKey(), v.variableValue);
+                    System.out.println(vdash);
+                }
+            }
+
         }
 
     }

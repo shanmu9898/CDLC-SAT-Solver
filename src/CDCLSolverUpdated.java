@@ -1,30 +1,17 @@
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
-
 import javafx.util.Pair;
-
-
-/* While not all variables are assigned or the formula is not satisfied
-   guess a variable
-     increase the decision level
-      do unit propogation
-        if there is a conflict do conflict analysis and backtrack
-* */
 
 
 public class CDCLSolverUpdated {
@@ -57,7 +44,7 @@ public class CDCLSolverUpdated {
         this.decisionLevelAssigned = new HashMap<Integer, Integer>();
         this.currentDecisionLevel = 0;
         this.valuesAlreadyAssigned = new ArrayList<Variable>();
-        this.variablesAssignment = new HashMap<Integer, Integer>(); // Should variables assignment be increased when it is unit propogated?
+        this.variablesAssignment = new HashMap<Integer, Integer>();
         this.lastDecidedVariables = new ArrayList<Variable>();
         this.implicationGraph = new int[totalNumberOfVariables + 1][totalNumberOfVariables + 1];
         this.tempUnitPropVariables = new ArrayList<Variable>();
@@ -198,10 +185,7 @@ public class CDCLSolverUpdated {
                 unsatProof.add(cdash);
                 unsatProof.add(new Clause(new ArrayList<>()));
             }
-
         }
-
-
 
         File fout = new File("resolutionProof.txt");
         FileOutputStream fos = new FileOutputStream(fout);
@@ -223,7 +207,6 @@ public class CDCLSolverUpdated {
                }
             }
             bw.newLine();
-
         }
         bw.close();
     }
@@ -246,7 +229,6 @@ public class CDCLSolverUpdated {
                     implicationGraph[i][v.getVariableName()] = 0;
                 }
             }
-
         }
 
         if(value.getOrVariables().size() == 1) {
@@ -267,9 +249,7 @@ public class CDCLSolverUpdated {
                 }
             }
         }
-
         return key;
-
     }
 
     //Backtracking function in case of Normal conflict analysis
@@ -294,7 +274,6 @@ public class CDCLSolverUpdated {
                     for(int i = 1; i < totalNumberOfVariables; i++) {
                         implicationGraph[i][v.getVariableName()] = 0;
                     }
-
                 }
             }
             decisionToLevelToBackTrack--;
@@ -325,7 +304,6 @@ public class CDCLSolverUpdated {
             }
         }
         return decisionToLevelToBackTrack;
-
     }
 
     //Helper to print the answers
@@ -339,9 +317,7 @@ public class CDCLSolverUpdated {
                     System.out.println(vdash);
                 }
             }
-
         }
-
     }
 
     // Analysing and adding clauses with 1st UIP
@@ -416,42 +392,28 @@ public class CDCLSolverUpdated {
     // Function to do resolution
     private Clause resolve(Clause conflictingClause, Clause antecedant) {
         if(antecedant != null) {
-//            System.out.println("Resolving");
-//            System.out.println(conflictingClause);
-//            System.out.println(antecedant);
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             Clause antecedantClauseClone = new Clause((ArrayList<Variable>) antecedant.getOrVariables().clone());
             unsatProof.add(conflictingClauseClone);
             unsatProof.add(antecedantClauseClone);
 
         } else {
-//            System.out.println("Resolving");
-//            System.out.println(conflictingClause);
-//            System.out.println("empty clause");
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             Clause antecedantClauseClone = new Clause(new ArrayList<>());
             unsatProof.add(conflictingClauseClone);
             unsatProof.add(antecedantClauseClone);
-
         }
         if(antecedant == null || conflictingClause == null || terminatingCondition(conflictingClause)) {
-//            System.out.println("To give");
-//            System.out.println(conflictingClause);
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
             unsatProof.add(conflictingClauseClone);
             return conflictingClause;
         } else if (conflictingClause.getOrVariables().size() == 0) {
-//            System.out.println("To give");
             Clause conflictingClauseClone = new Clause((ArrayList<Variable>) conflictingClause.getOrVariables().clone());
-//            System.out.println(conflictingClause);
             unsatProof.add(conflictingClauseClone);
             return conflictingClause;
         }else {
-
             Clause intermediateClause = applyResolution(conflictingClause, antecedant);
             intermediateClause.removeDuplicates();
-//            System.out.println("To give");
-//            System.out.println(intermediateClause);
             Clause intermediateClauseClone = new Clause((ArrayList<Variable>) intermediateClause.getOrVariables().clone());
             unsatProof.add(intermediateClauseClone);
             Variable lastGuessedVariable = getLastGuessedVariableInC(intermediateClause);
@@ -459,8 +421,6 @@ public class CDCLSolverUpdated {
             Clause resolvedClause = resolve(intermediateClause, antecedantProof);
             return resolvedClause;
         }
-
-
     }
 
     // Check for terminating condition in the case of 1st UIP [Checks if only one variable is from the current decision level of conflict]
@@ -540,7 +500,6 @@ public class CDCLSolverUpdated {
                         Variable temp = v.modVariableName();
                         variablesToLearn.add(temp);
                     }
-
                 }
             }
             ArrayList<Variable> clauseToLearn = new ArrayList<Variable>();
@@ -580,7 +539,6 @@ public class CDCLSolverUpdated {
                         Variable temp = v.modVariableName();
                         variablesToLearn.add(temp);
                     }
-
                 }
             }
             ArrayList<Variable> clauseToLearn = new ArrayList<Variable>();
@@ -602,21 +560,16 @@ public class CDCLSolverUpdated {
         } else {
             return variablesToLearn;
         }
-
-
-
     }
 
     //Helper function to find a variable in an Arraylist of variables
     private Variable findVariable(int variableName, ArrayList<Variable> valuesAlreadyAssigned){
-
         for(Variable v : valuesAlreadyAssigned) {
             if(v.getVariableName() == variableName) {
                 return v;
             }
         }
         return null;
-
     }
 
     // Implementation of initial setUp required to run the algorithm
@@ -665,8 +618,6 @@ public class CDCLSolverUpdated {
             if(cdash.getOrVariables().size() != 0) {
                 UIPtrack.put(tempUnitPropVariables.get(0).getVariableName(), cdash);
             }
-
-
             if(tempUnitPropVariables.size() > 0) {
                 unitPropDone = 0;
                 valuesAlreadyAssigned.addAll(tempUnitPropVariables);
@@ -676,13 +627,11 @@ public class CDCLSolverUpdated {
                     variablesAssignment.put(v.getVariableName(), 1);
                     addToImplicationGraph(v);
                 }
-
                 tempUnitPropVariables.clear();
             } else {
                 tempUnitPropVariables.clear();
                 unitPropDone = 1;
             }
-
         }
         return new Pair<>(0, new Variable(0, false));
     }
@@ -764,9 +713,6 @@ public class CDCLSolverUpdated {
         }
     }
 
-
-
-
     //Calculate if the clause is true or false until now based on which the unassigned value can be identified.
     private boolean calculateTruthOfClause(ArrayList<Variable> tempdisjunc) {
         int numberOfTrueVariables = 0;
@@ -847,7 +793,6 @@ public class CDCLSolverUpdated {
                         clause2[v.getVariableName()] = clause2[v.getVariableName()] + 1;
                     }
                 }
-
         }
 
         ArrayList<Integer> numbers = new ArrayList<>();
@@ -950,6 +895,4 @@ public class CDCLSolverUpdated {
         return 1;
 
     }
-
-
 }

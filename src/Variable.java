@@ -2,7 +2,6 @@ public class Variable {
     int variableName;
     boolean variableValue;
 
-
     public Variable(int variableName, boolean variableValue){
         this.variableName = variableName;
         this.variableValue = variableValue;
@@ -27,7 +26,6 @@ public class Variable {
         boolean newValue = this.variableValue;
         return new Variable(newVariableName, newValue);
     }
-
 
     @Override
     public boolean equals(Object o) {

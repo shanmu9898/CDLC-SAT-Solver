@@ -1,7 +1,7 @@
 public class puzzleSolver {
 
     // converting einstein puzzle to cnf
-    // direct console output to einsteinPuzzle.out
+    // direct console output to einsteinPuzzle.cnf
 
     public void main (String args[]) {
         // nationalities
@@ -23,6 +23,7 @@ public class puzzleSolver {
         int bird = 11;
         int cat = 12;
         int horse = 13;
+        int fish = 14;
 
         // beverages
         int tea = 15;

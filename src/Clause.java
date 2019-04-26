@@ -9,7 +9,6 @@ public class Clause {
         this.orVariables = new ArrayList<Variable>();
     }
 
-
     public Clause(ArrayList<Variable> orVariables) {
         this.orVariables = orVariables;
     }

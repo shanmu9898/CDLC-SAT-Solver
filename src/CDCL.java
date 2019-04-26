@@ -1,7 +1,5 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.time.Instant;
@@ -18,25 +16,23 @@ public class CDCL {
             // Conflict Analysis has two choices      :-  GRASP, 1UIP
             // Solver below can be used to change the parameters and run accordingly
 
+            long elapesedTimeTotal = 0;
             for(int i = 0; i < 1; i ++) {
                 InputParser parser = new InputParser();
                 ArrayList<Clause> formula = parser.parse(inputFileName);
                 CDCLSolverUpdated cdclSolver = new CDCLSolverUpdated(parser.numberOfClauses, parser.numberOfVariables, formula);
-                String solution = cdclSolver.solution("Random", "1UIP", true);
+                Instant start = Instant.now();
+                String solution = cdclSolver.solution("Random", "GRASP", true);
+                Instant finish = Instant.now();
                 System.out.println(solution);
-//            System.out.println("iteration " + i);
+                long elapesedTime = Duration.between(start, finish).toNanos();
+                elapesedTimeTotal += elapesedTime;
                 total = total + cdclSolver.numberVariables;
-
+                //System.out.println("Time taken is " + elapesedTimeTotal); //uncomment this to calculate timing
             }
-
-//        System.out.println("values is " + total/1);
 
         } else {
             System.out.println("Path does not exist. Please input full file path");
         }
-
-
-
     }
-
 }

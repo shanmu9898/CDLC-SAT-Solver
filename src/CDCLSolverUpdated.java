@@ -51,8 +51,6 @@ public class CDCLSolverUpdated {
         this.UIPtrack = new HashMap<Integer, Clause>();
         this.clause2 = new int[totalNumberOfVariables + 1];
         this.unsatProof = new ArrayList<>();
-
-
     }
 
     public ArrayList<Clause> convertRawFormula(ArrayList<Clause> fomula) {

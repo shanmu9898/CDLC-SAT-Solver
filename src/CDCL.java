@@ -22,11 +22,10 @@ public class CDCL {
                 InputParser parser = new InputParser();
                 ArrayList<Clause> formula = parser.parse(inputFileName);
                 CDCLSolverUpdated cdclSolver = new CDCLSolverUpdated(parser.numberOfClauses, parser.numberOfVariables, formula);
-                String solution = cdclSolver.solution("AllC", "1UIP", true);
+                String solution = cdclSolver.solution("Random", "1UIP", true);
                 System.out.println(solution);
 //            System.out.println("iteration " + i);
                 total = total + cdclSolver.numberVariables;
-
 
             }
 

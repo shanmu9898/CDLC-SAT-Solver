@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import javafx.util.Pair;
+import org.apache.commons.math3.util.Pair;
 
 
 public class CDCLSolverUpdated {

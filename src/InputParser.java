@@ -1,12 +1,8 @@
-import static java.lang.Boolean.TRUE;
-
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import sun.tools.jstat.Literal;
 
 public class InputParser {
 
